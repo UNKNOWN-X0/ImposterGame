@@ -1,23 +1,54 @@
-# Imposter
+# ImposterGame
 
-A word-imposter party game for the web. Everyone gets the same secret word except
-one player, who gets a similar-but-wrong word — or nothing at all. Give one-word
-clues, argue, vote.
+[![Checks](https://github.com/UNKNOWN-X0/ImposterGame/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/UNKNOWN-X0/ImposterGame/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/github/package-json/v/UNKNOWN-X0/ImposterGame?label=version)](package.json)
+[![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)](package.json)
+[![Languages](https://img.shields.io/badge/languages-English%20%7C%20Thai%20%7C%20German-6750A4)](src/i18n/strings/)
+[![Play](https://img.shields.io/badge/Play-on%20Netlify-00C7B7?logo=netlify&logoColor=white)](https://impostergamebyfocus.netlify.app/)
 
-Plays in **English, Thai and German**.
+A social deduction party game built around secret words. Give one-word clues,
+spot the player who does not know the crew's word, and vote before the imposters
+take over.
 
-Made by Thanate Amornjiraporn (Focus).
+**[Play in your browser](https://impostergamebyfocus.netlify.app/)** ·
+[Changelog](CHANGELOG.md) · [Playtest guide](PLAYTEST.md) ·
+[Report a bug](https://github.com/UNKNOWN-X0/ImposterGame/issues)
 
-Two ways to play, one set of rules:
+Made by **Thanate Amornjiraporn (Focus)**.
 
-- **One phone** — pass it around the table. Each player taps to see their card, a
-  gate screen covers it in between. Runs entirely in the browser, no server.
-- **Everyone's phone** — one person starts a room on their laptop, everyone else
-  joins over the same wifi with a four-character code.
+## Ways to play
 
----
+| Mode              | How it works                                                     | What you need                                                 |
+| ----------------- | ---------------------------------------------------------------- | ------------------------------------------------------------- |
+| Pass-and-play     | Pass one phone around; each player privately reveals their card. | A browser. Use the Netlify link above.                        |
+| Multiplayer rooms | Each player joins on their own device using a room code.         | The Node server, either on the same Wi-Fi or publicly hosted. |
+
+The Netlify site serves the pass-and-play game. Multiplayer rooms require the
+separate server described under [Deploying](#deploying).
+
+## Features
+
+- English, Thai, and German, with separate choices for interface and word language.
+- Built-in word packs, plus custom packs you can create, import, and share.
+- Configurable imposter counts, decoy modes, optional roles, and scoring.
+- Saved local rounds, room reconnection, and host transfer.
+- Light and dark modes, colour themes, and reduced-motion support.
+- A shared rules engine for both play modes, with automated rule and browser checks.
+
+## Explore the project
+
+[Run locally](#running-it) · [Tests](#tests) ·
+[Architecture](#how-it-is-put-together) · [Customization](#making-it-yours) ·
+[Desktop launchers](#playing-it-without-a-terminal) · [Deployment](#deploying)
 
 ## Running it
+
+Install **Node.js 20 or newer** and npm, then clone the repository:
+
+```bash
+git clone https://github.com/UNKNOWN-X0/ImposterGame.git
+cd ImposterGame
+```
 
 ```bash
 npm install
@@ -41,7 +72,7 @@ Same wifi, then the room code.
   On everyone else's phone:  http://192.168.1.42:5173
 ```
 
-If you are working on the UI *and* want rooms, run both: `npm run serve` in one
+If you are working on the UI _and_ want rooms, run both: `npm run serve` in one
 terminal and `npm run dev` in another. Vite proxies `/api` through to the server,
 so everything behaves the same as in production.
 
@@ -55,7 +86,7 @@ One command for everything that can be checked: the unit tests, the coverage
 floors, the build, and both browser sweeps. Anything it cannot run — no dev
 dependencies, no browser installed — it skips out loud and says so in the
 summary, rather than printing green for a smaller check than you think you
-ran. Nothing here is required to *play* the game, which needs only React.
+ran. Nothing here is required to _play_ the game, which needs only React.
 
 ```bash
 npm test          # the rules and the server, in seconds, with no browser
@@ -117,7 +148,7 @@ Every push runs the tests, the floors and both browser sweeps through
 
 ## How it is put together
 
-Six folders, and the rule is that each only knows about the ones above it.
+The source is split by responsibility, with shared rules and UI used by both play modes.
 
 ```
 src/core/            the rules. No DOM, no network, no clock, no React.
@@ -263,13 +294,14 @@ rather than naming the role:
 ```js
 // src/core/roles/understudy.js
 export default {
-  id: 'understudy',
-  side: 'imposters',      // 'crew', 'imposters' or 'nobody'
-  reveals: 'imposters',   // what their card shows beyond the word
-  deal({ plainCrew, rng }) {   // optional: anything extra to deal them
+  id: "understudy",
+  side: "imposters", // 'crew', 'imposters' or 'nobody'
+  reveals: "imposters", // what their card shows beyond the word
+  deal({ plainCrew, rng }) {
+    // optional: anything extra to deal them
     return {};
   },
-  endsGameWhenVotedOut: null,  // or { winner: 'jester', reason: 'jester' }
+  endsGameWhenVotedOut: null, // or { winner: 'jester', reason: 'jester' }
 };
 ```
 
@@ -418,32 +450,31 @@ screen rather than failing with a 404.
 your own. There is a `render.yaml` in the repo, so Render reads the whole
 setup from it; elsewhere the three things that matter are:
 
-| | |
-|---|---|
-| build | `npm install && npm run build` |
-| start | `npm start` |
-| port | read from `PORT` — already done, do not hard-code it |
+|       |                                                      |
+| ----- | ---------------------------------------------------- |
+| build | `npm install && npm run build`                       |
+| start | `npm start`                                          |
+| port  | read from `PORT` — already done, do not hard-code it |
 
 Rooms live in the server's memory and are swept after six idle hours. On a
 free tier that sleeps when idle, the first visitor waits half a minute while
 it wakes.
 
-**Games in progress survive a restart**, which is the one thing memory alone
-could not do: a deploy or a crash used to end every round at the table, and a
-host that restarts a process whenever it likes is not a rare event. So every
-change is also written to a small JSON file, and a fresh process reads it
-back. Rooms touched in the last hour come back; anything older is left, since
-a stale code could now belong to somebody else.
+**Room recovery requires a retained storage file.** Each change is written to a
+JSON file, which a fresh process reads on startup. Compatible rooms touched in
+the last hour can be restored. If the host discards its filesystem during a
+restart or deploy, recovery requires a persistent volume and a `ROOM_STORE`
+path on that volume.
 
 **That file holds the word currently in play.** It is the same machine that
 was holding it in memory a moment ago, so it is not a secret in a new place,
 but it is a secret at rest and worth knowing about:
 
-| | |
-|---|---|
-| where | `.rooms.json` beside the code, or wherever `ROOM_STORE` points |
-| turn it off | `ROOM_STORE=off` — rooms then die with the process |
-| how long | `ROOM_RESTORE_MS`, default one hour |
+|             |                                                                   |
+| ----------- | ----------------------------------------------------------------- |
+| where       | `.rooms.json` beside the code, or wherever `ROOM_STORE` points    |
+| turn it off | `ROOM_STORE=off` — rooms then die with the process                |
+| how long    | `ROOM_RESTORE_MS`, default one hour                               |
 | permissions | written `0600`, owner only, and in `.gitignore` — never commit it |
 
 It also carries the version that wrote it. A build whose rules have changed
@@ -455,18 +486,3 @@ across a table, where the code gets read out loud and nobody outside the room
 can reach the server anyway. A public address is a different situation, so
 `render.yaml` asks for six. The join box takes its length from whatever the
 server says.
-
-## Module map
-
-Already extensively modular; keep these boundaries:
-
-- `src/core/`: game engine, rules, roles, scoring, and randomness.
-- `src/features/`: lobby, rounds, packs, errors, rules, and changelog UI.
-- `src/modes/`: local and online orchestration.
-- `src/content/`: vocabulary and history.
-- `src/i18n/`: translations.
-- `src/ui/`: reusable components, icons, themes, and styles.
-- `server/`: multiplayer rooms, storage, and HTTP server.
-- `src/testing/`, colocated `*.test.js`: checks and tests.
-
-Use `npm test` and `npm run build` before pushing. Netlify publishes `dist/`, while a separate Node server is needed for online rooms.
