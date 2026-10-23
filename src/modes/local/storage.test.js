@@ -287,3 +287,17 @@ test('a browser with no storage at all is survived', () => {
     if (had) globalThis.localStorage = previous;
   }
 });
+
+// These arrays are required by the reveal, clue, and voting screens.
+test('incomplete saved rounds are rejected and removed before the UI resumes them', () => {
+  const game = aRoundInProgress();
+  for (const key of ['order', 'imposterIds', 'eliminated', 'revealed']) {
+    const saved = { ...game, version: VERSION };
+    delete saved[key];
+    const store = fakeStorage({ [GAME_KEY]: JSON.stringify(saved) });
+    withStorage(store, () => {
+      assert.equal(loadGame(), null, `missing ${key} cannot be resumed`);
+      assert.equal(store.getItem(GAME_KEY), null, 'invalid round is removed');
+    });
+  }
+});

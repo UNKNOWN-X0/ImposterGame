@@ -41,7 +41,8 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
-const PORT = Number(process.env.PORT) || 5173;
+// Port 0 asks the operating system for a free port (used by isolated tests).
+const PORT = Number(process.env.PORT ?? 5173);
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -329,11 +330,12 @@ if (isMain) {
   sweeper.unref?.();
 
   server.listen(PORT, '0.0.0.0', () => {
-    const addr = lanAddress(PORT);
+    const port = server.address().port;
+    const addr = lanAddress(port);
     console.log('');
     console.log('  🕵️  Imposter is running');
     console.log('');
-    console.log(`  On this computer:  http://localhost:${PORT}`);
+    console.log(`  On this computer:  http://localhost:${port}`);
     console.log(`  On everyone else's phone:  ${addr}`);
     console.log('');
     console.log('  Same wifi, then open that address and join with the room code.');

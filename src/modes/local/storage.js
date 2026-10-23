@@ -186,7 +186,8 @@ export function isResumable(state) {
   const known = (id) => ids.has(id);
   for (const key of ['order', 'imposterIds', 'eliminated', 'revealed']) {
     const list = state[key];
-    if (list !== undefined && (!Array.isArray(list) || !list.every(known))) return false;
+    // Screens read these arrays directly; missing is invalid, not an empty list.
+    if (!Array.isArray(list) || !list.every(known)) return false;
   }
   if (state.roles && Object.keys(state.roles).some((id) => !known(id))) return false;
   if (!Number.isInteger(state.round) || state.round < 0) return false;

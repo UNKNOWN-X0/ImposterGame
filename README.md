@@ -455,3 +455,18 @@ across a table, where the code gets read out loud and nobody outside the room
 can reach the server anyway. A public address is a different situation, so
 `render.yaml` asks for six. The join box takes its length from whatever the
 server says.
+
+## Module map
+
+Already extensively modular; keep these boundaries:
+
+- `src/core/`: game engine, rules, roles, scoring, and randomness.
+- `src/features/`: lobby, rounds, packs, errors, rules, and changelog UI.
+- `src/modes/`: local and online orchestration.
+- `src/content/`: vocabulary and history.
+- `src/i18n/`: translations.
+- `src/ui/`: reusable components, icons, themes, and styles.
+- `server/`: multiplayer rooms, storage, and HTTP server.
+- `src/testing/`, colocated `*.test.js`: checks and tests.
+
+Use `npm test` and `npm run build` before pushing. Netlify publishes `dist/`, while a separate Node server is needed for online rooms.
