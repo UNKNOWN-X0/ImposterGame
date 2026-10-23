@@ -1,0 +1,332 @@
+/* Banners, pickers, the phase stepper, tooltips and focus. */
+
+/* ------------------------------------------------------------------ *
+ * Banners
+ * ------------------------------------------------------------------ */
+
+.banner {
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  color: var(--text-dim);
+}
+
+.banner.error {
+  background: var(--imposter-deep);
+  border-color: var(--imposter-line);
+  color: var(--imposter);
+}
+
+.banner.win-crew,
+.card.win-crew {
+  background: linear-gradient(160deg, var(--crew-deep), var(--surface));
+  border-color: var(--crew-line);
+}
+
+.banner.win-imposter,
+.card.win-imposter {
+  background: linear-gradient(160deg, var(--imposter-deep), var(--surface));
+  border-color: var(--imposter-line);
+}
+
+.setting.block {
+  display: block;
+}
+
+.timer.out {
+  color: var(--imposter);
+}
+
+/* The last few seconds should feel like the last few seconds. */
+.timer.low {
+  color: var(--accent-text);
+  animation: tick 1s steps(2, end) infinite;
+}
+
+@keyframes tick {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.timer {
+  font-variant-numeric: tabular-nums;
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.dots::after {
+  content: '';
+  animation: dots 1.4s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
+/* ------------------------------------------------------------------ *
+ * Language picker
+ * ------------------------------------------------------------------ */
+
+.langpicker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.langpicker select {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------ *
+ * Phase stepper
+ * ------------------------------------------------------------------ */
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+.step-dot {
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  flex: 1;
+  transition: background 0.3s ease;
+}
+
+.step.done .step-dot {
+  background: var(--text-faint);
+}
+
+.step.now .step-dot {
+  background: var(--accent);
+}
+
+.step.now {
+  color: var(--accent-text);
+}
+
+/* The current step gets room for its whole name; the rest are just bars. */
+.step.now {
+  flex: 2.4;
+}
+
+.step-label {
+  flex: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.step:not(.now) .step-label {
+  display: none;
+}
+
+/* ------------------------------------------------------------------ *
+ * Hold-to-reveal
+ * ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ *
+ * Vote progress
+ * ------------------------------------------------------------------ */
+
+.voters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.voter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  font-size: 14px;
+  color: var(--text-faint);
+}
+
+.voter .avatar {
+  width: 26px;
+  height: 26px;
+  font-size: 12px;
+}
+
+.voter.voted {
+  color: var(--text);
+  border-color: var(--crew);
+}
+
+.voter .tick {
+  color: var(--crew);
+  font-weight: 800;
+}
+
+.avatar.dim {
+  filter: grayscale(1) brightness(0.7);
+}
+
+/* ------------------------------------------------------------------ *
+ * Tooltip
+ * ------------------------------------------------------------------ */
+
+.info {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.info-dot {
+  /* 24 is the smallest a control is allowed to be. It was 22. */
+  width: 24px;
+  height: 24px;
+  /* So the ::after below, which is the real touch target, has something to
+     position against. */
+  position: relative;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text-faint);
+  font-size: 12px;
+  font-weight: 800;
+  font-style: italic;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  flex: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+/* The dot stays 24px, because that is the size that looks right next to a
+   label — but ten of them in a column of settings is the densest cluster of
+   taps in the app, and a 24px target is half what a thumb needs. This grows
+   the hit area to 44px without moving a pixel of what is drawn. */
+.info-dot::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+}
+
+.info-dot:hover,
+.info-dot[aria-expanded='true'] {
+  color: var(--accent-text);
+  border-color: var(--accent-text);
+}
+
+.tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  translate: -50% 0;
+  width: min(280px, 78vw);
+  z-index: 30;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-dim);
+  box-shadow: var(--shadow);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/*
+ * Inside a settings row the bubble anchors to the row rather than to the dot,
+ * so it spans the card and can never hang off the edge of a narrow phone —
+ * the dot itself sits mid-sentence, which is a terrible thing to measure from.
+ */
+.setting {
+  position: relative;
+}
+
+.setting .info {
+  position: static;
+}
+
+.setting .tip {
+  left: 0;
+  right: 0;
+  width: auto;
+  translate: none;
+  top: calc(100% - 4px);
+}
+
+/*
+ * Each row is positioned, so a later row would otherwise paint over an open
+ * bubble no matter what z-index the bubble itself carries. Lifting the whole
+ * row while it holds one is the fix. Browsers without :has() simply show the
+ * bubble behind the next row — degraded, not broken.
+ */
+.setting:has(.tip) {
+  z-index: 10;
+}
+
+/* ------------------------------------------------------------------ *
+ * Focus — visible for keyboards, invisible for taps
+ * ------------------------------------------------------------------ */
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

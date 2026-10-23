@@ -1,0 +1,21 @@
+/**
+ * The stylesheet, in layers.
+ *
+ * The order below is the cascade: tokens first so everything after can use
+ * them, then the plain furniture, then the screens, then the motion that sits
+ * on top of all of it. Moving a line between these files can change what wins,
+ * so each part is a contiguous slice of what was one file.
+ */
+
+@import './tokens.css';
+@import './base.css';
+@import './controls.css';
+@import './game.css';
+@import './settings.css';
+@import './chrome.css';
+@import './responsive.css';
+@import './motion.css';
+@import './screens.css';
+@import './packs.css';
+@import './whatsnew.css';
+@import './errors.css';

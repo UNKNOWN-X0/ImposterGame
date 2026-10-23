@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Imposter">
+  <!--
+    The app's own brand mark, as a standalone icon: a fedora brim with a pair
+    of spectacles under it. Same geometry as BrandMark in src/ui/icons, with
+    the colours written out instead of inherited, and no animation — a home
+    screen icon that blinks is a home screen icon that drains a battery.
+  -->
+  <rect width="48" height="48" rx="11" fill="#120f17" />
+  <g transform="translate(0 1.5)">
+    <path d="M13 16.5V11c0-3.4 4.4-5.4 11-5.4s11 2 11 5.4v5.5"
+          stroke="#f5bc42" stroke-width="3" fill="none" stroke-linejoin="round" />
+    <path d="M13 16.4h22" stroke="#f5bc42" stroke-width="2.6" opacity="0.45" />
+    <path d="M5 18.4h38" stroke="#f5bc42" stroke-width="3.4" stroke-linecap="round" />
+    <circle cx="16" cy="28" r="8" fill="#f5bc42" />
+    <circle cx="32" cy="28" r="8" fill="#f5bc42" />
+    <path d="M24 26h0" stroke="#f5bc42" stroke-width="3" stroke-linecap="round" />
+    <circle cx="16" cy="28" r="3" fill="#120f17" />
+    <circle cx="32" cy="28" r="3" fill="#120f17" />
+  </g>
+</svg>

@@ -1,0 +1,62 @@
+/* The screen nobody wants to see, and the report on it. */
+
+/* ------------------------------------------------------------------ *
+ * When something goes wrong
+ *
+ * A player is holding a phone at a party, so this stays quiet: no red
+ * banner across the top and no wall of monospace on arrival. The report
+ * is behind a tap, and looks like something to hand over rather than
+ * something to be alarmed by.
+ * ------------------------------------------------------------------ */
+
+/* Not the share-code style, which breaks a long string anywhere it likes.
+   A report is lines, and a line that wraps in the middle of a path is a
+   line nobody can read. It scrolls sideways in its own box instead. */
+.input.report {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  white-space: pre;
+  overflow-x: auto;
+  overflow-wrap: normal;
+  word-break: normal;
+  color: var(--text-dim);
+  background: var(--bg-soft);
+  cursor: text;
+}
+
+/* The quiet half: something failed in the background and the game carried
+   on. It sits under whatever is happening rather than over it, because it
+   is information, not an interruption. */
+.failure-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.failure-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.failure-line:hover {
+  border-color: var(--text-faint);
+  color: var(--text);
+}
+
+.failure-line .icon {
+  color: var(--imposter);
+  flex: none;
+}

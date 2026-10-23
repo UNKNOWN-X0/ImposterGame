@@ -1,0 +1,60 @@
+/* What changes on something bigger than a phone. */
+
+/* ------------------------------------------------------------------ *
+ * Bigger screens
+ *
+ * The game is designed for a phone, but it gets played on a laptop propped
+ * up on the table too. Give it a little more room rather than stretching a
+ * phone layout across a monitor.
+ * ------------------------------------------------------------------ */
+
+@media (min-width: 700px) {
+  .shell {
+    max-width: 680px;
+    padding-top: 28px;
+  }
+
+  .title {
+    font-size: 34px;
+  }
+
+  .headline {
+    font-size: 46px;
+  }
+
+  .modes {
+    flex-direction: row;
+  }
+
+  .modes .mode {
+    flex: 1;
+  }
+
+  .vote-grid {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+
+  .reveal {
+    min-height: 360px;
+  }
+}
+
+/* A phone lying on its side during a round still needs the button reachable. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .reveal {
+    min-height: 190px;
+  }
+
+  .stack.fill {
+    justify-content: flex-start;
+  }
+}
+
+/* ==================================================================== *
+ * v1.8 — the visual pass
+ *
+ * Everything below styles the SVG icon set and the motion that came with
+ * it. It sits after the original rules on purpose: these are refinements
+ * on a layout that already worked, so the reduced-motion block at the very
+ * end can switch the movement off without anything losing its meaning.
+ * ==================================================================== */

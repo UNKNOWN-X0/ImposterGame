@@ -1,0 +1,747 @@
+/* The screens either side of a round. */
+
+/* ------------------------------------------------------------------ *
+ * The icon sheet (#icons)
+ *
+ * A workbench page, not a screen in the game — it shows every icon at the
+ * sizes it is really used at, with its motion running.
+ * ------------------------------------------------------------------ */
+
+.shell.board {
+  max-width: 900px;
+}
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
+}
+
+.board-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  padding: 14px 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.board-art {
+  color: var(--accent-text);
+  margin-bottom: 4px;
+}
+
+.board-sizes {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  color: var(--text-dim);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  width: 100%;
+  justify-content: center;
+}
+
+.board-cell .hint {
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.board-cell .motion {
+  color: var(--accent-text);
+  opacity: 0.85;
+}
+
+/* ------------------------------------------------------------------ *
+ * The pack a word came from
+ * ------------------------------------------------------------------ */
+
+.pack-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--overlay);
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  animation: rise 0.34s ease 0.24s both;
+}
+
+/* On a card the chip belongs to the word above it, not to the line below. */
+.reveal .pack-chip {
+  margin-top: -2px;
+}
+
+/* In the round eyebrow it sits beside the label, and must not inherit the
+   uppercase letter-spacing that line uses. */
+.row-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.row-eyebrow .pack-chip {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 12.5px;
+  padding: 3px 10px;
+}
+
+/* ------------------------------------------------------------------ *
+ * The display menu
+ * ------------------------------------------------------------------ */
+
+.pickerwrap {
+  position: relative;
+  display: inline-flex;
+  /* over the cards below, or the menu would open behind them */
+  z-index: 40;
+}
+
+/*
+ * On a small phone the menu hangs off the left of the screen.
+ *
+ * The sheet is `right: 0` against its own button and 288px wide at 320px of
+ * viewport — but the display button is not the rightmost thing in the bar,
+ * the language picker is, so the sheet started about 36px to the left of the
+ * screen and the page clips rather than scrolls. "APPEARANCE" read "EARANCE",
+ * and three of the five theme chips lost their colour swatch off the edge.
+ *
+ * Dropping `position: relative` here hands the sheet to `.topbar`, which is
+ * already a positioned ancestor, so `right: 0` becomes the right edge of the
+ * bar instead of the right edge of one button — on screen by construction,
+ * whatever the language does to the widths around it.
+ */
+@media (max-width: 440px) {
+  .pickerwrap {
+    position: static;
+  }
+}
+
+.iconpicker {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.12s ease;
+}
+
+.iconpicker:hover,
+.iconpicker[aria-expanded='true'] {
+  color: var(--accent-text);
+  border-color: var(--accent-text);
+}
+
+.iconpicker:active {
+  transform: scale(0.94);
+}
+
+.sheet {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(272px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  animation: sheet-in 0.18s ease both;
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+.sheet .hint {
+  margin: 0;
+  font-size: 12.5px;
+}
+
+.sheet .segmented.wide {
+  margin-top: 0;
+}
+
+.swatches {
+  display: grid;
+  /* One column in the menu, two wherever there is room for them.
+     `auto-fit` cannot know how long a word is, and the names differ by
+     language: at two columns a chip is about 119px, which fits "Midnight"
+     and slices the last letter off "Mitternacht" with no ellipsis to say
+     so. A min of 124px means the menu — 244px of usable width — takes one
+     column in every language, which is also the easier thing to tap. A
+     wider container still gets its two. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 124px), 1fr));
+  gap: 6px;
+}
+
+.swatch {
+  display: flex;
+  align-items: center;
+  /* and if a name is longer still, say so rather than cutting it mid-word */
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  color: var(--text-dim);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 40px;
+  text-align: left;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.12s ease;
+}
+
+.swatch:active {
+  transform: scale(0.97);
+}
+
+.swatch[aria-pressed='true'] {
+  border-color: var(--accent-text);
+  color: var(--text);
+}
+
+/* The chip is the theme in two colours: its page, and its accent on top. */
+.swatch-chip {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.swatch-chip > span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+/* The disc in the appearance button fills as the menu opens. */
+.icon.anim .shade {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: shade 0.45s ease both;
+}
+
+@keyframes shade {
+  from { transform: scaleX(0.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet,
+  .icon .shade {
+    animation: none !important;
+  }
+}
+
+/* On the narrowest phones the header runs out of room once the display and
+   language controls are both in it — German and Thai need more width than
+   English for the same pill. The mark alone still says where you are. */
+@media (max-width: 380px) {
+  .topbar {
+    gap: 8px;
+  }
+
+  .topbar .brand-name {
+    display: none;
+  }
+
+  /* "Copy" is the widest thing in the chip in German ("Kopieren") and the
+     least necessary: the icon says the same thing, tapping the code copies
+     it either way, and the tick still confirms it did. Dropping the words
+     keeps the whole bar on one row on a small phone instead of pushing the
+     pickers onto a second. */
+  .topbar .roomcode-label {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * The optional roles
+ * ------------------------------------------------------------------ */
+
+/* The magnifier looks for something rather than at it. */
+.icon.anim .lens {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: search 4.6s ease-in-out infinite;
+}
+
+@keyframes search {
+  0%, 58%, 100% { transform: translate(0, 0); }
+  70% { transform: translate(1.4px, -1px); }
+  84% { transform: translate(-1.2px, 0.8px); }
+}
+
+/* The jester is playing the fool on purpose, so the cap tips and the bells
+   swing after it. */
+.icon.anim .cap {
+  transform-box: fill-box;
+  transform-origin: 50% 90%;
+  animation: caper 3.8s ease-in-out infinite;
+}
+
+.icon.anim .bells {
+  transform-box: fill-box;
+  transform-origin: 50% 90%;
+  animation: caper 3.8s ease-in-out 0.09s infinite;
+}
+
+@keyframes caper {
+  0%, 50%, 100% { transform: rotate(0deg); }
+  60% { transform: rotate(9deg); }
+  72% { transform: rotate(-8deg); }
+  84% { transform: rotate(4deg); }
+}
+
+/* The one behind edges closer. */
+.icon.anim .shadow-figure {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: closer 3.4s ease-in-out infinite;
+}
+
+@keyframes closer {
+  0%, 55%, 100% { transform: translateX(0); }
+  70%, 80% { transform: translateX(-1.4px); }
+}
+
+/* The score bars grow, tallest last. */
+.icon.anim .bars > path {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: bar-up 3s ease-in-out infinite;
+}
+
+.icon.anim .bars > path:nth-child(2) { animation-delay: 0.1s; }
+.icon.anim .bars > path:nth-child(3) { animation-delay: 0.2s; }
+
+@keyframes bar-up {
+  0%, 60%, 100% { transform: scaleY(1); }
+  72%, 82% { transform: scaleY(0.62); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon .lens,
+  .icon .cap,
+  .icon .bells,
+  .icon .shadow-figure,
+  .icon .bars > path {
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Roles and the scoreboard
+ * ------------------------------------------------------------------ */
+
+/* The jester belongs to neither side, so their card is neither colour. */
+.reveal.wild {
+  background: linear-gradient(160deg, var(--accent-deep), var(--surface));
+  border-color: var(--accent-text);
+}
+
+.reveal.wild .glyph.role {
+  color: var(--accent-text);
+}
+
+.glyph.wild {
+  background: var(--accent-deep);
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+}
+
+.celebrate.win-wild {
+  box-shadow:
+    var(--shadow-card),
+    0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent),
+    0 0 44px -18px color-mix(in srgb, var(--accent) calc(var(--glow) * 60%), transparent);
+}
+
+/* The role tags at the end of a game. */
+.tag.role-detective,
+.tag.role-sidekick,
+.tag.role-jester {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--overlay);
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+}
+
+.tag.role-jester {
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+}
+
+.tag.role-sidekick {
+  border-color: var(--imposter-line);
+  color: var(--imposter);
+}
+
+/* The role chips in the settings carry their icon. */
+.pack {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 2px;
+  border-top: 1px solid var(--line);
+}
+
+.score-row:first-child {
+  border-top: 0;
+}
+
+.score-row .avatar {
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+}
+
+.score-points {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.score-row.leader .score-points {
+  color: var(--accent-text);
+}
+
+/* Whoever just scored, so the end of a game shows what changed. */
+.score-gain {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--crew);
+  background: var(--crew-deep);
+  border-radius: 999px;
+  padding: 2px 8px;
+  animation: pop-in 0.3s ease 0.2s both;
+}
+
+/* What each way of winning pays. */
+.worth {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.worth-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 2px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.worth-row:first-child {
+  border-top: 0;
+}
+
+.worth-row b {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The top row is the best a game can pay, so it reads as the prize. */
+.worth-row:first-child b {
+  color: var(--accent-text);
+}
+
+/* ------------------------------------------------------------------ *
+ * Tooltips, laid out rather than run together
+ * ------------------------------------------------------------------ */
+
+.tip {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Near the bottom of a long lobby there is no room below the row, so the
+   bubble opens upwards instead of off the edge of the screen. */
+.setting .tip.above {
+  top: auto;
+  bottom: calc(100% - 4px);
+}
+
+.tip-lead {
+  display: block;
+}
+
+.tip-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.tip-line {
+  display: grid;
+  grid-template-columns: minmax(64px, auto) 1fr;
+  gap: 4px 10px;
+  align-items: baseline;
+}
+
+.tip-line > b {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Below about 340px the two columns leave nothing for the sentence, so the
+   name sits on its own line above it. */
+@media (max-width: 340px) {
+  .tip-line {
+    grid-template-columns: 1fr;
+    gap: 1px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * The language menu
+ *
+ * The same sheet the display menu uses. It replaced a native <select>, which
+ * on a phone opened the operating system's own wheel in the middle of a game.
+ * ------------------------------------------------------------------ */
+
+.langpicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.12s ease;
+}
+
+.langpicker:hover,
+.langpicker[aria-expanded='true'] {
+  color: var(--accent-text);
+  border-color: var(--accent-text);
+}
+
+.langpicker:active {
+  transform: scale(0.96);
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: var(--bg-soft);
+  color: var(--text-dim);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.12s ease;
+}
+
+.choice:active {
+  transform: scale(0.98);
+}
+
+.choice[aria-pressed='true'] {
+  border-color: var(--accent-text);
+  color: var(--text);
+}
+
+.choice .icon {
+  color: var(--accent-text);
+}
+
+/* ------------------------------------------------------------------ *
+ * The rules, on a first visit
+ * ------------------------------------------------------------------ */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px 16px;
+  background: rgb(0 0 0 / 0.55);
+  backdrop-filter: blur(3px);
+  animation: fade-in 0.22s ease both;
+  overflow-y: auto;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+.modal {
+  width: min(460px, 100%);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  padding: 22px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  animation: modal-in 0.32s cubic-bezier(0.2, 1.1, 0.35, 1) both;
+}
+
+.modal:focus {
+  outline: none;
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim,
+  .modal {
+    animation: none !important;
+  }
+}
+
+/* The rules are longer than a phone screen, so the way out of them stays put
+   rather than waiting at the bottom of a scroll. */
+.modal > .btn.primary {
+  position: sticky;
+  bottom: -22px;
+  margin-bottom: -6px;
+  box-shadow:
+    0 -14px 20px -6px var(--surface),
+    0 8px 22px -10px color-mix(in srgb, var(--accent) calc(var(--glow) * 100%), transparent);
+}
+
+/* ------------------------------------------------------------------ *
+ * The translator's board (#strings)
+ *
+ * A workbench, not a screen players see — but it is read for a long time in
+ * one sitting, so the three languages line up in a column each and the key
+ * sits above them in the same place every row.
+ * ------------------------------------------------------------------ */
+
+.string-row {
+  border-top: 1px solid var(--line);
+  padding: 10px 0;
+}
+
+.string-row.flagged {
+  border-left: 2px solid var(--imposter);
+  padding-left: 10px;
+}
+
+.string-key {
+  display: block;
+  font-size: 12px;
+  color: var(--dim);
+  margin-bottom: 4px;
+  word-break: break-all;
+}
+
+.string-line {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  gap: 8px;
+  align-items: baseline;
+  margin: 2px 0;
+  font-size: 14px;
+}
+
+.string-line.flagged .string-text {
+  color: var(--imposter);
+}
+
+.string-lang {
+  color: var(--dim);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.string-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .string-line {
+    grid-template-columns: 3.5rem 1fr;
+  }
+  .string-line .tag {
+    grid-column: 2;
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "imposter-game",
+  "private": true,
+  "version": "1.29.0",
+  "type": "module",
+  "description": "A word-imposter party game in English, Thai and German. Pass one phone around, or play from everyone’s phone over the same wifi.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server/server.js",
+    "test": "node --test \"src/**/*.test.js\" \"server/**/*.test.js\"",
+    "verify": "node tools/verify.mjs",
+    "coverage": "node tools/coverage.mjs",
+    "fingerprint": "node tools/fingerprint.mjs",
+    "serve": "node server/server.js",
+    "party": "npm run build && node server/server.js",
+    "screens": "node src/testing/browser/every-screen.mjs",
+    "endings": "node src/testing/browser/every-ending.mjs",
+    "icons": "node tools/make-icons.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.7"
+  },
+  "author": "Thanate Amornjiraporn (Focus)"
+}

@@ -1,0 +1,28 @@
+# Deploying somewhere rooms work.
+#
+# Netlify and GitHub Pages serve files and nothing else, which is enough for
+# passing one phone around but not for rooms: those need a program that stays
+# running, holding who is in which room and pushing every change to every
+# phone. This file tells Render how to run that program, so the only thing
+# left to do is point Render at the repository.
+#
+# It works the same anywhere that runs Node — Railway, Fly, a Raspberry Pi in
+# the corner. The three things that matter are here: install and build, start
+# `server/server.js`, and let it read PORT from the environment.
+
+services:
+  - type: web
+    name: imposter
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      # Four characters is plenty when everyone is in the same room and the
+      # code is read out loud. On the open internet the address is public, so
+      # a longer code keeps strangers from stumbling into a game.
+      - key: ROOM_CODE_LENGTH
+        value: 6

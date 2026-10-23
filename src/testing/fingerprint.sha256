@@ -1,0 +1,9 @@
+# The fingerprint of a good run — see src/testing/fingerprint.js.
+#
+# This hash changing means the game behaves differently. That is either a bug
+# you just wrote, or a change you meant, in which case read the diff and then
+# re-bless it with:  node tools/fingerprint.mjs --write
+#
+# blessed at v1.26.0, 2026-10-19 (pack-warning strings only; no word or outcome changed)
+lines  24279
+sha256 19684d1e1a3c676132dd619e5a4aea7bdf78e59fe43c82bd0eb54ba6ee963c8d

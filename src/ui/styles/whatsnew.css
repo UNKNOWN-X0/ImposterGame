@@ -1,0 +1,66 @@
+/* The history, in the game. */
+
+/* ------------------------------------------------------------------ *
+ * What's new
+ * ------------------------------------------------------------------ */
+
+.release-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.release-v {
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.release-date {
+  font-size: 13px;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.tag.accent {
+  background: var(--accent-deep);
+  color: var(--accent-text);
+}
+
+.release-notes {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.release-notes li::marker {
+  color: var(--accent);
+}
+
+/* The home screen's three links sit in a row until they cannot. */
+.home-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px 14px;
+}
+
+/* A dot on "what changed" means there is something there that was not
+   there last time. It is the only unread marker in the game, so it is
+   small and it goes away the moment the screen is opened. */
+.home-links .dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: 1px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}

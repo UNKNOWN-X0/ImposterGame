@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Imposter">
+  <!--
+    The same mark, for Android, which crops an icon to whatever shape the
+    phone prefers — a circle, a squircle, a rounded square. Only the middle
+    80% is guaranteed to survive, so the background runs to the edges and the
+    mark is pulled in to sit inside that circle. Drawn separately rather than
+    padded at build time, because the two icons are genuinely different
+    pictures and one of them should not be a guess.
+  -->
+  <rect width="48" height="48" fill="#120f17" />
+  <g transform="translate(24 25.5) scale(0.72) translate(-24 -24)">
+    <path d="M13 16.5V11c0-3.4 4.4-5.4 11-5.4s11 2 11 5.4v5.5"
+          stroke="#f5bc42" stroke-width="3" fill="none" stroke-linejoin="round" />
+    <path d="M13 16.4h22" stroke="#f5bc42" stroke-width="2.6" opacity="0.45" />
+    <path d="M5 18.4h38" stroke="#f5bc42" stroke-width="3.4" stroke-linecap="round" />
+    <circle cx="16" cy="28" r="8" fill="#f5bc42" />
+    <circle cx="32" cy="28" r="8" fill="#f5bc42" />
+    <path d="M24 26h0" stroke="#f5bc42" stroke-width="3" stroke-linecap="round" />
+    <circle cx="16" cy="28" r="3" fill="#120f17" />
+    <circle cx="32" cy="28" r="3" fill="#120f17" />
+  </g>
+</svg>

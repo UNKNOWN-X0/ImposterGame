@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.vite/
+
+# Rooms in progress, so a restart does not end everybody's game.
+# It holds the word currently in play — never commit it.
+.rooms.json
+.rooms.json.*.tmp
+
+# Screenshots from the browser sweep: for looking at, not for comparing.
+# What is compared is src/testing/browser/layouts, which is text.
+src/testing/browser/shots/
+
+# Local environment and hosting credentials
+.env
+.env.*
+!.env.example
+.netlify/

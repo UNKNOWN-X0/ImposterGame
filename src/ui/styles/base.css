@@ -1,0 +1,230 @@
+/* Reset, page layout and type. */
+
+/* ------------------------------------------------------------------ *
+ * Reset
+ * ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  /* An opaque base under the fixed gradient: without it, a page taller than
+     the viewport paints white below the fold. */
+  background-color: var(--bg);
+  /* Nothing may make the page draggable sideways. A card that lands with a
+     scale, or a long unbroken word, would otherwise add horizontal scroll on
+     a narrow phone. `clip` rather than `hidden`: hidden would turn this into
+     a scroll container and take sticky positioning and scroll anchoring with
+     it. */
+  overflow-x: clip;
+}
+
+body {
+  background-image: radial-gradient(
+    120% 80% at 50% 0%,
+    color-mix(in srgb, var(--accent) 7%, var(--bg-soft)) 0%,
+    var(--bg) 60%
+  );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Layout
+ * ------------------------------------------------------------------ */
+
+.shell {
+  min-height: 100dvh;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: max(16px, env(safe-area-inset-top)) 16px
+    calc(24px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* The bar holds a back button, the room code with its copy button, and two
+     pickers, and every one of them is a different width in every language. On
+     one line that overran the viewport from 430px down — and because the page
+     clips horizontal overflow rather than scrolling it, the controls past the
+     edge were not merely awkward, they were gone for the rest of the game:
+     in German at 320 both the display and the language picker sat entirely
+     off-screen. Wrapping is the fix that does not need a breakpoint guessed
+     per language: whatever does not fit moves to a second row, where it can
+     still be tapped. */
+  flex-wrap: wrap;
+  row-gap: 8px;
+  min-height: 40px;
+  /* Every child of .shell carries the screen-in animation, and an element
+     with a filling transform animation is its own stacking context painted
+     in document order — so without this the hero below paints over anything
+     the header opens, and the display menu is there but unclickable. */
+  position: relative;
+  z-index: 2;
+}
+
+.topbar .brand {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar .spacer {
+  flex: 1;
+}
+
+.roomcode {
+  /* It may shrink, but never below the code itself — the point of the chip is
+     to answer "what was the room again?" across a table. */
+  min-width: 0;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.22em;
+  font-weight: 800;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 6px 6px 6px 14px;
+  border-radius: 999px;
+  font-size: 15px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.roomcode-action {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  background: var(--surface-2);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.code-word {
+  letter-spacing: 0.2em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.stack.tight {
+  gap: 8px;
+}
+
+/* Fills the leftover height so a single card sits centred rather than
+   stranded at the top of a tall phone screen. */
+.stack.fill {
+  flex: 1;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.center {
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------ *
+ * Type
+ * ------------------------------------------------------------------ */
+
+.title {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.subtitle {
+  color: var(--text-dim);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.hint {
+  color: var(--text-faint);
+  font-size: 14px;
+}
+
+/* A name somebody typed has no obligation to contain a space. Without this a
+   long one pushed its card wider than the phone, and a centred stack inside
+   an overflowing box centres on the box, not the screen — so everything in
+   the card sat a few pixels right of the heading above it. */
+.break-anywhere {
+  overflow-wrap: anywhere;
+}
+
+/* Hint mode has no word to show, so it gets a readable line instead of the
+   oversized single-word treatment. */
+.hint-line {
+  font-size: clamp(19px, 5.2vw, 24px);
+  font-weight: 700;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.big-word {
+  font-size: clamp(30px, 9vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  word-break: break-word;
+}

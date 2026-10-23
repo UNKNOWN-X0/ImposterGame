@@ -1,0 +1,394 @@
+/* The two dials — light or dark, and which family of colours. */
+
+/* ------------------------------------------------------------------ *
+ * Design tokens
+ * ------------------------------------------------------------------ */
+
+/**
+ * Two dials, not one.
+ *
+ * `data-mode` is light or dark — resolved from the reader's choice, or from
+ * the system when they leave it on system. `data-theme` is which family of
+ * colours: every theme declares the same tokens for both modes, so nothing in
+ * the stylesheet below ever has to know which is on.
+ *
+ * The palettes are generated and contrast-checked rather than picked by eye:
+ * every text token clears 4.5:1 on every surface it can land on, in both
+ * modes, in all five themes. `--accent` is a fill; `--accent-text` is the same
+ * colour darkened until it can be read as text on a plain surface, because a
+ * bright amber on white cannot.
+ */
+
+:root {
+  --radius: 18px;
+  --radius-sm: 12px;
+  --tap: 52px;
+
+  /* Thai faces are listed before the Latin fallbacks so Thai text picks up a
+     proper Thai font instead of whatever the browser substitutes. */
+  --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Noto Sans Thai', 'IBM Plex Sans Thai', 'Sarabun', 'Thonburi', sans-serif;
+
+  color-scheme: dark;
+}
+
+/* The washes, hairlines and shadows belong to the mode rather than to the
+   theme: dark lifts a surface with white, light settles it with black. */
+[data-mode='dark'] {
+  color-scheme: dark;
+  --overlay: rgb(255 255 255 / 0.06);
+  --overlay-strong: rgb(255 255 255 / 0.12);
+  --sheen: rgb(255 255 255 / 0.07);
+  --stripe: rgb(255 255 255 / 0.022);
+  --hairline: rgb(255 255 255 / 0.1);
+  --shadow: 0 10px 30px rgb(0 0 0 / 0.45);
+  --shadow-card: 0 18px 45px rgb(0 0 0 / 0.35);
+  --shadow-thumb: 0 2px 10px rgb(0 0 0 / 0.25);
+  --glow: 0.85;
+  --backdrop-alpha: 0.5;
+}
+
+[data-mode='light'] {
+  color-scheme: light;
+  --overlay: rgb(0 0 0 / 0.04);
+  --overlay-strong: rgb(0 0 0 / 0.1);
+  --sheen: rgb(255 255 255 / 0.6);
+  --stripe: rgb(0 0 0 / 0.03);
+  --hairline: rgb(0 0 0 / 0.08);
+  --shadow: 0 10px 30px rgb(0 0 0 / 0.1);
+  --shadow-card: 0 16px 40px rgb(0 0 0 / 0.1);
+  --shadow-thumb: 0 2px 8px rgb(0 0 0 / 0.14);
+  /* A glow on a pale page reads as a smudge. */
+  --glow: 0.35;
+  --backdrop-alpha: 0.3;
+}
+
+[data-theme='midnight'][data-mode='dark'] {
+  --bg: #120f17;
+  --bg-soft: #191620;
+  --surface: #201c28;
+  --surface-2: #2a2534;
+  --line: #464054;
+  --text: #f2f1f4;
+  --text-dim: #bab6c3;
+  --text-faint: #9b96a7;
+  --accent: #f5bc42;
+  --accent-text: #f5bc42;
+  --accent-deep: #352a12;
+  --on-accent: #10121a;
+  --crew: #4bdd80;
+  --crew-deep: #0e3a24;
+  --crew-line: #206f45;
+  --on-crew: #10121a;
+  --imposter: #fb7087;
+  --imposter-deep: #3d0b17;
+  --imposter-line: #8d253f;
+  --on-imposter: #10121a;
+}
+
+[data-theme='midnight'][data-mode='light'] {
+  --bg: #f8f7fa;
+  --bg-soft: #f0eef4;
+  --surface: #ffffff;
+  --surface-2: #ebe9ef;
+  --line: #c9c5d3;
+  --text: #201e25;
+  --text-dim: #585365;
+  --text-faint: #6a6477;
+  --accent: #f4a806;
+  --accent-text: #906404;
+  --accent-deep: #f6f1e4;
+  --on-accent: #10121a;
+  --crew: #147b47;
+  --crew-deep: #d7f4e3;
+  --crew-line: #72ca9b;
+  --on-crew: #ffffff;
+  --imposter: #c11f40;
+  --imposter-deep: #fde3e7;
+  --imposter-line: #e48b9d;
+  --on-imposter: #ffffff;
+}
+
+[data-theme='ember'][data-mode='dark'] {
+  --bg: #161210;
+  --bg-soft: #1e1917;
+  --surface: #27211e;
+  --surface-2: #322a27;
+  --line: #514743;
+  --text: #f3f2f1;
+  --text-dim: #c1bbb8;
+  --text-faint: #a49c98;
+  --accent: #f06542;
+  --accent-text: #f06542;
+  --accent-deep: #341a13;
+  --on-accent: #10121a;
+  --crew: #4bdd80;
+  --crew-deep: #0e3a24;
+  --crew-line: #206f45;
+  --on-crew: #10121a;
+  --imposter: #fb7087;
+  --imposter-deep: #3d0b17;
+  --imposter-line: #8d253f;
+  --on-imposter: #10121a;
+}
+
+[data-theme='ember'][data-mode='light'] {
+  --bg: #faf8f8;
+  --bg-soft: #f3f0ef;
+  --surface: #ffffff;
+  --surface-2: #eeebea;
+  --line: #d1cac7;
+  --text: #24201e;
+  --text-dim: #625955;
+  --text-faint: #726965;
+  --accent: #d5340b;
+  --accent-text: #c7300a;
+  --accent-deep: #f6e8e4;
+  --on-accent: #ffffff;
+  --crew: #147b47;
+  --crew-deep: #d7f4e3;
+  --crew-line: #72ca9b;
+  --on-crew: #ffffff;
+  --imposter: #c11f40;
+  --imposter-deep: #fde3e7;
+  --imposter-line: #e48b9d;
+  --on-imposter: #ffffff;
+}
+
+[data-theme='forest'][data-mode='dark'] {
+  --bg: #101614;
+  --bg-soft: #171e1b;
+  --surface: #1e2723;
+  --surface-2: #27322e;
+  --line: #43514b;
+  --text: #f1f3f2;
+  --text-dim: #b8c1bd;
+  --text-faint: #98a49f;
+  --accent: #9ad345;
+  --accent-text: #9ad345;
+  --accent-deep: #263018;
+  --on-accent: #10121a;
+  --crew: #4bdd80;
+  --crew-deep: #0e3a24;
+  --crew-line: #206f45;
+  --on-crew: #10121a;
+  --imposter: #fb7087;
+  --imposter-deep: #3d0b17;
+  --imposter-line: #8d253f;
+  --on-imposter: #10121a;
+}
+
+[data-theme='forest'][data-mode='light'] {
+  --bg: #f8faf9;
+  --bg-soft: #eff3f1;
+  --surface: #ffffff;
+  --surface-2: #eaeeec;
+  --line: #c7d1cd;
+  --text: #1e2422;
+  --text-dim: #55625d;
+  --text-faint: #616c66;
+  --accent: #7cb724;
+  --accent-text: #517718;
+  --accent-deep: #eef4e7;
+  --on-accent: #10121a;
+  --crew: #147b47;
+  --crew-deep: #d7f4e3;
+  --crew-line: #72ca9b;
+  --on-crew: #ffffff;
+  --imposter: #c11f40;
+  --imposter-deep: #fde3e7;
+  --imposter-line: #e48b9d;
+  --on-imposter: #ffffff;
+}
+
+[data-theme='ocean'][data-mode='dark'] {
+  --bg: #0f1417;
+  --bg-soft: #161c20;
+  --surface: #1c2328;
+  --surface-2: #252e34;
+  --line: #404c54;
+  --text: #f1f2f4;
+  --text-dim: #b6bec3;
+  --text-faint: #96a0a7;
+  --accent: #2bcdee;
+  --accent-text: #2bcdee;
+  --accent-deep: #132f34;
+  --on-accent: #10121a;
+  --crew: #4bdd80;
+  --crew-deep: #0e3a24;
+  --crew-line: #206f45;
+  --on-crew: #10121a;
+  --imposter: #fb7087;
+  --imposter-deep: #3d0b17;
+  --imposter-line: #8d253f;
+  --on-imposter: #10121a;
+}
+
+[data-theme='ocean'][data-mode='light'] {
+  --bg: #f7f9fa;
+  --bg-soft: #eef1f4;
+  --surface: #ffffff;
+  --surface-2: #e9ecef;
+  --line: #c5cdd3;
+  --text: #1e2225;
+  --text-dim: #535d65;
+  --text-faint: #626c74;
+  --accent: #0bafd0;
+  --accent-text: #07768d;
+  --accent-deep: #e4f3f6;
+  --on-accent: #10121a;
+  --crew: #147b47;
+  --crew-deep: #d7f4e3;
+  --crew-line: #72ca9b;
+  --on-crew: #ffffff;
+  --imposter: #c11f40;
+  --imposter-deep: #fde3e7;
+  --imposter-line: #e48b9d;
+  --on-imposter: #ffffff;
+}
+
+[data-theme='mono'][data-mode='dark'] {
+  --bg: #121214;
+  --bg-soft: #1a1a1c;
+  --surface: #212124;
+  --surface-2: #2b2b2e;
+  --line: #48484c;
+  --text: #f2f2f3;
+  --text-dim: #bcbcbe;
+  --text-faint: #9d9da0;
+  --accent: #637de3;
+  --accent-text: #6c84e5;
+  --accent-deep: #161b31;
+  --on-accent: #10121a;
+  --crew: #4bdd80;
+  --crew-deep: #0e3a24;
+  --crew-line: #206f45;
+  --on-crew: #10121a;
+  --imposter: #fb7087;
+  --imposter-deep: #3d0b17;
+  --imposter-line: #8d253f;
+  --on-imposter: #10121a;
+}
+
+[data-theme='mono'][data-mode='light'] {
+  --bg: #f8f8f9;
+  --bg-soft: #f0f0f1;
+  --surface: #ffffff;
+  --surface-2: #ebebec;
+  --line: #cbcbcd;
+  --text: #202022;
+  --text-dim: #5a5a5d;
+  --text-faint: #69696c;
+  --accent: #2046df;
+  --accent-text: #2046df;
+  --accent-deep: #e6e9f5;
+  --on-accent: #ffffff;
+  --crew: #147b47;
+  --crew-deep: #d7f4e3;
+  --crew-line: #72ca9b;
+  --on-crew: #ffffff;
+  --imposter: #c11f40;
+  --imposter-deep: #fde3e7;
+  --imposter-line: #e48b9d;
+  --on-imposter: #ffffff;
+}
+
+/* Before the script runs there is no data-mode yet, and the first paint must
+   still be right. These two mirror what the provider will settle on a moment
+   later, so nobody sees a white flash on a dark phone. */
+:root:not([data-mode]) {
+  color-scheme: dark;
+  --bg: #120f17;
+  --bg-soft: #191620;
+  --surface: #201c28;
+  --surface-2: #2a2534;
+  --line: #464054;
+  --text: #f2f1f4;
+  --text-dim: #bab6c3;
+  --text-faint: #9b96a7;
+  --accent: #f5bc42;
+  --accent-text: #f5bc42;
+  --accent-deep: #352a12;
+  --on-accent: #10121a;
+  --crew: #4bdd80;
+  --crew-deep: #0e3a24;
+  --crew-line: #206f45;
+  --on-crew: #10121a;
+  --imposter: #fb7087;
+  --imposter-deep: #3d0b17;
+  --imposter-line: #8d253f;
+  --on-imposter: #10121a;
+
+  --overlay: rgb(255 255 255 / 0.06);
+  --overlay-strong: rgb(255 255 255 / 0.12);
+  --sheen: rgb(255 255 255 / 0.07);
+  --stripe: rgb(255 255 255 / 0.022);
+  --hairline: rgb(255 255 255 / 0.1);
+  --shadow: 0 10px 30px rgb(0 0 0 / 0.45);
+  --shadow-card: 0 18px 45px rgb(0 0 0 / 0.35);
+  --shadow-thumb: 0 2px 10px rgb(0 0 0 / 0.25);
+  --glow: 0.85;
+  --backdrop-alpha: 0.5;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-mode]) {
+    color-scheme: light;
+    --bg: #f8f7fa;
+    --bg-soft: #f0eef4;
+    --surface: #ffffff;
+    --surface-2: #ebe9ef;
+    --line: #c9c5d3;
+    --text: #201e25;
+    --text-dim: #585365;
+    --text-faint: #6a6477;
+    --accent: #f4a806;
+    --accent-text: #906404;
+    --accent-deep: #f6f1e4;
+    --on-accent: #10121a;
+    --crew: #147b47;
+    --crew-deep: #d7f4e3;
+    --crew-line: #72ca9b;
+    --on-crew: #ffffff;
+    --imposter: #c11f40;
+    --imposter-deep: #fde3e7;
+    --imposter-line: #e48b9d;
+    --on-imposter: #ffffff;
+
+    --overlay: rgb(0 0 0 / 0.04);
+    --overlay-strong: rgb(0 0 0 / 0.1);
+    --sheen: rgb(255 255 255 / 0.6);
+    --stripe: rgb(0 0 0 / 0.03);
+    --hairline: rgb(0 0 0 / 0.08);
+    --shadow: 0 10px 30px rgb(0 0 0 / 0.1);
+    --shadow-card: 0 16px 40px rgb(0 0 0 / 0.1);
+    --shadow-thumb: 0 2px 8px rgb(0 0 0 / 0.14);
+    --glow: 0.35;
+    --backdrop-alpha: 0.3;
+  }
+}
+
+/* A bright fill on a pale page has too little edge of its own, so in light
+   mode the buttons and chips that are filled with the accent draw their own
+   boundary — 3:1 against the page, which a fill alone would not give. */
+[data-mode='light'] .btn.primary,
+[data-mode='light'] .seg-thumb {
+  border: 1px solid var(--accent-text);
+}
+
+/* Thai sets tone marks and vowels above and below the line, so it needs more
+   room than Latin and none of the tightened tracking. */
+:lang(th) {
+  line-height: 1.75;
+}
+
+:lang(th) .title,
+:lang(th) .big-word,
+:lang(th) .headline {
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+:lang(th) .eyebrow {
+  letter-spacing: 0.08em;
+}

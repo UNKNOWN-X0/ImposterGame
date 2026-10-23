@@ -1,0 +1,232 @@
+/* Writing a pack, and reading every pack. */
+
+/* ------------------------------------------------------------------ *
+ * Writing a pack
+ * ------------------------------------------------------------------ */
+
+.input.words {
+  width: 100%;
+  min-height: 160px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* A share code is one long unbroken string; let it wrap anywhere rather than
+   push the card off the side of the phone. */
+.input.words.code-out {
+  min-height: 72px;
+  font-size: 12px;
+  line-height: 1.5;
+  word-break: break-all;
+  color: var(--text-dim);
+}
+
+.counts {
+  gap: 6px;
+}
+
+.row.wrap {
+  flex-wrap: wrap;
+}
+
+.skipped {
+  margin: 2px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--text-faint);
+  line-height: 1.6;
+}
+
+.emoji-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.emoji-pick {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    transform 0.12s ease;
+}
+
+.emoji-pick:active {
+  transform: scale(0.94);
+}
+
+.emoji-pick[aria-pressed='true'] {
+  border-color: var(--accent-text);
+  background: var(--accent-deep);
+}
+
+/* A pack the table wrote, in the list beside the built-in ones. */
+.pack.own[aria-pressed='true'] {
+  border-style: dashed;
+}
+
+.pack.edit {
+  background: transparent;
+  border-style: dashed;
+  color: var(--text-faint);
+}
+
+/* A custom pack and its pencil are one thing, not two entries. */
+.pack-pair {
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.pack-pair .pack {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+}
+
+.pack-edit {
+  display: grid;
+  place-items: center;
+  padding: 0 10px;
+  min-width: 38px;
+  border: 1px solid var(--line);
+  border-left: 0;
+  border-radius: 0 999px 999px 0;
+  background: var(--bg-soft);
+  color: var(--text-faint);
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.pack-edit:hover {
+  color: var(--accent-text);
+}
+
+/* ------------------------------------------------------------------ *
+ * The pack library — every pack, and what is in it
+ * ------------------------------------------------------------------ */
+
+/**
+ * A shelf of closed packs with one open at a time. The closed row is a
+ * target the whole width of the card, because on a phone the thing being
+ * tapped is the pack rather than a chevron the size of a pea.
+ */
+
+.pack-row {
+  padding: 0;
+  overflow: hidden;
+}
+
+.pack-row-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: var(--tap);
+  padding: 10px 14px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pack-row-head:hover {
+  background: var(--overlay);
+}
+
+.pack-row-emoji {
+  font-size: 22px;
+  line-height: 1;
+  flex: none;
+}
+
+.pack-row-id {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.pack-row-id b {
+  font-size: 16px;
+}
+
+/* The chevron points at what the tap does: down to open, up to close. */
+.pack-row .chev {
+  display: grid;
+  place-items: center;
+  color: var(--text-faint);
+  flex: none;
+  transform: rotate(-90deg);
+  transition: transform 0.22s ease;
+}
+
+.pack-row.open .chev {
+  transform: rotate(90deg);
+}
+
+.word-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 14px 4px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  border-top: 1px solid var(--hairline);
+}
+
+.word-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 6px 0;
+  font-size: 14.5px;
+  border-bottom: 1px solid var(--stripe);
+  min-width: 0;
+}
+
+.word-list .to {
+  color: var(--text-faint);
+  font-size: 12px;
+  flex: none;
+}
+
+/* The near miss is the crew colour: it is a real word from a real pack,
+   just not the one everybody else is holding. */
+.word-list .decoy {
+  color: var(--crew);
+  min-width: 0;
+}
+
+.word-list mark {
+  background: var(--accent-deep);
+  color: var(--accent-text);
+  border-radius: 4px;
+  padding: 0 2px;
+}
+
+.pack-row .row {
+  padding: 10px 14px 14px;
+}
+
+/* The hint line takes its own row: squeezed beside the buttons it wraps to
+   three lines and the buttons stop looking like a pair. */
+.pack-row .row .hint {
+  flex: 1 0 100%;
+}
+
+.pack-row .code-out {
+  margin: 0 14px 14px;
+  width: calc(100% - 28px);
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1"
+    />
+    <!-- The colour the phone paints around the app. Midnight, like the game. -->
+    <meta name="theme-color" content="#120f17" />
+    <meta name="description" content="A word-imposter party game for one phone or a room full of them." />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!--
+      Saved to a home screen, this is an app, and an app has an icon.
+
+      Three audiences, three answers. iOS reads apple-touch-icon and nothing
+      else — it ignores both SVG icons and the manifest's, which is why a PNG
+      is here at all. Android reads the manifest, and crops whatever it finds
+      to the phone's own shape, so there is a maskable drawing with room
+      around the mark. Desktop browsers take the SVG and stay sharp at any
+      size, with a PNG behind it for the ones that will not.
+    -->
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- iOS still wants its own prefix for these, and takes the title from
+         here rather than from <title>, which says "Imposter" plus whatever
+         the page felt like adding. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Imposter" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <title>Imposter</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

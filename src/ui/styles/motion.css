@@ -1,0 +1,999 @@
+/* Everything that moves, and the rule about when it should. */
+
+/* ------------------------------------------------------------------ *
+ * Backdrop — two soft shapes drifting behind everything
+ * ------------------------------------------------------------------ */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.75;
+}
+
+.backdrop svg {
+  width: 100%;
+  height: 100%;
+  filter: blur(18px);
+}
+
+.bd-one {
+  transform-origin: center;
+}
+
+.bd-two {
+  transform-origin: center;
+}
+
+/* ------------------------------------------------------------------ *
+ * Icons
+ * ------------------------------------------------------------------ */
+
+.icon {
+  display: block;
+  flex: none;
+}
+
+.btn .icon,
+.btn-link .icon {
+  margin-right: -2px;
+}
+
+/* A circled icon, used at the top of every card that announces something. */
+.glyph {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  margin: 0 auto;
+  flex: none;
+}
+
+.glyph.big {
+  width: 76px;
+  height: 76px;
+}
+
+.glyph.good {
+  background: var(--crew-deep);
+  border-color: var(--crew-line);
+  color: var(--crew);
+}
+
+.glyph.danger {
+  background: var(--imposter-deep);
+  border-color: var(--imposter-line);
+  color: var(--imposter);
+}
+
+.glyph.role {
+  width: 46px;
+  height: 46px;
+  background: var(--overlay);
+  border-color: var(--overlay-strong);
+  color: inherit;
+}
+
+.reveal.crew .glyph.role { color: var(--crew); }
+.reveal.imposter .glyph.role { color: var(--imposter); }
+.reveal.neutral .glyph.role { color: var(--text-dim); }
+
+/* ------------------------------------------------------------------ *
+ * Brand mark
+ * ------------------------------------------------------------------ */
+
+.brandmark {
+  color: var(--accent-text);
+  flex: none;
+}
+
+.brandmark .bm-pupil {
+  fill: var(--bg);
+}
+
+/* A long, uneven blink: a steady one would read as a spinner. */
+.brandmark.alive .bm-eyes {
+  transform-origin: center 28px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Home
+ * ------------------------------------------------------------------ */
+
+.hero {
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.hero .brandmark {
+  margin-bottom: 4px;
+}
+
+.mode {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-deep);
+  color: var(--accent-text);
+  flex: none;
+}
+
+.mode:hover .mode-icon {
+  transform: scale(1.09) rotate(-5deg);
+}
+
+.mode-body {
+  display: block;
+  min-width: 0;
+}
+
+/* A sheen that crosses the card on hover. */
+.mode::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    var(--sheen) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.mode:hover::after {
+  transform: translateX(120%);
+}
+
+.credit {
+  margin-top: auto;
+  padding-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+.credit b {
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.credit span {
+  opacity: 0.8;
+}
+
+/* ------------------------------------------------------------------ *
+ * The card being opened
+ * ------------------------------------------------------------------ */
+
+.card-face {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+}
+
+.card-face-icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--text-dim);
+}
+
+.hold-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.hold-ring-track {
+  fill: none;
+  stroke: var(--hairline);
+  stroke-width: 5;
+}
+
+.hold-ring-fill {
+  fill: none;
+  stroke: var(--accent-text);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+/* The shield gets a subtle card texture so it reads as a face-down card. */
+.reveal.shield {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      var(--stripe) 0 10px,
+      transparent 10px 20px
+    ),
+    linear-gradient(160deg, var(--surface-2), var(--bg-soft));
+}
+
+.reveal {
+  box-shadow: var(--shadow-card);
+}
+
+.reveal.crew {
+  box-shadow:
+    var(--shadow-card),
+    0 0 0 1px color-mix(in srgb, var(--crew) 14%, transparent),
+    0 0 44px -18px color-mix(in srgb, var(--crew) calc(var(--glow) * 60%), transparent);
+}
+
+.reveal.imposter {
+  box-shadow:
+    var(--shadow-card),
+    0 0 0 1px color-mix(in srgb, var(--imposter) 14%, transparent),
+    0 0 44px -18px color-mix(in srgb, var(--imposter) calc(var(--glow) * 60%), transparent);
+}
+
+/* ------------------------------------------------------------------ *
+ * Confetti
+ * ------------------------------------------------------------------ */
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: var(--radius);
+}
+
+.confetti span {
+  position: absolute;
+  top: -14px;
+  width: 8px;
+  height: 13px;
+  border-radius: 2px;
+  opacity: 0;
+}
+
+.card.win-crew,
+.card.win-imposter {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ *
+ * Buttons with a little more life
+ * ------------------------------------------------------------------ */
+
+.btn.primary {
+  box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--accent) calc(var(--glow) * 100%), transparent);
+}
+
+.btn.primary:active:not(:disabled) {
+  box-shadow: 0 4px 12px -8px color-mix(in srgb, var(--accent) calc(var(--glow) * 100%), transparent);
+}
+
+.roomcode-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.langpicker {
+  gap: 5px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Screens arrive rather than appear
+ * ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ *
+ * All of the above is decoration. None of it is information.
+ * ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ *
+ * v1.10 — motion while a game is on
+ *
+ * The rule everywhere below: movement marks something that changed, or
+ * something that is alive. Nothing here loops for decoration alone except
+ * the blinking, which is what stops a face from looking like a diagram.
+ * ------------------------------------------------------------------ */
+
+/* Eyes. One long cycle, with a double blink near the end so it never lands
+   on a metronome — a steady blink reads as a loading spinner. fill-box keeps
+   each pair squashing around its own middle whatever size it is drawn at. */
+.eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* A whole eye, unlike a pair of pupils, has to get out of the way as it
+   shuts, or the closed frame reads as a squint. */
+
+/* The open eye shuts on a lash line rather than collapsing into nothing. */
+.eye-lash {
+  opacity: 0;
+}
+
+/* Two faces on screen together should not blink in lockstep. */
+
+/* A stroke that draws itself on: the tick inside the crew shield. */
+.draw-on {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* The role badge arrives with the card rather than being there already. */
+
+/* The word itself lands a beat later — the card turns, then it reads. */
+
+/* Whose turn it is, said with a pulse instead of another label. */
+.turn-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.turn-chip.now::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* A running clock should look like one. */
+
+/* Votes landing. The tick is mounted the moment a phone votes, so its pop is
+   the whole notification. */
+.voter .tick {
+  display: inline-flex;
+  align-items: center;
+}
+
+.vote-btn:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* The count fills in rather than appearing at full length. Width stays the
+   real figure; only the scale is animated, so a bar cannot land wrong. */
+.bar > span.grow-in {
+  transform-origin: left center;
+}
+
+/* The verdict. Catching an imposter and losing one of your own are not the
+   same news, so they do not arrive the same way. */
+
+.stamp.hit .glyph {
+  position: relative;
+}
+
+/* One ring out from the target, once. */
+.stamp.hit .glyph::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+}
+
+/* ------------------------------------------------------------------ *
+ * v1.11 — what each icon does
+ *
+ * One behaviour per icon, and it has to be the thing that object actually
+ * does: the bell rings, the hand waves, the die rolls, the scales rock and
+ * settle, the hourglass gets turned over. Nothing here is a spinner or a
+ * generic pulse.
+ *
+ * Almost all of it waits for `.icon.anim`, which a call site opts into, so
+ * the same drawing can sit still in a list and move on the card where it is
+ * the subject. Timings follow the usual guidance — a one-shot lands in
+ * 150–400ms; a loop is mostly rest, with the movement a short event every
+ * few seconds, so it never reads as a progress indicator.
+ *
+ * Every rotation sets `transform-box: fill-box` so the pivot is that shape's
+ * own box, not the 24×24 canvas.
+ * ------------------------------------------------------------------ */
+
+.icon .hand,
+.icon .bell-body,
+.icon .die,
+.icon .glass,
+.icon .beam,
+.icon .face,
+.icon .question,
+.icon .meridian,
+.icon .sheet,
+.icon .pupils {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Imposter and eye: the eyes glance sideways, the tell you are watching for. */
+
+/* Blind card: the question mark cannot make its mind up either. */
+
+/* Hint: the bulb comes on, and the rays come with it. */
+
+.icon .rays {
+  opacity: 0;
+}
+
+.icon.anim .rays {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* The face-down card: light travels down the three lines, one at a time. */
+
+/* The hand waves from the wrist. It used to slide sideways, which is not
+   something a hand does. */
+.icon.anim .hand {
+  transform-origin: 50% 96%;
+}
+
+/* The bell swings from its crown, and the clapper lags behind it. */
+.icon.anim .bell-body {
+  transform-origin: 50% 4%;
+}
+
+.icon.anim .clapper {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+
+/* The die rolls: a quarter turn, landing with a small bounce. */
+
+/* The target locks on: the rings close, then hold. */
+.icon.anim .ring-out,
+.icon.anim .ring-in {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* The crack opens down the shield, and the shield takes the hit. */
+.icon.anim .crack {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+}
+
+/* The scales rock, then settle level — which is what a tied vote is. */
+.icon.anim .beam {
+  transform-origin: 50% 8%;
+}
+
+/* Somebody turns the hourglass over. Then it waits, because that is the
+   point of it. */
+
+/* Search me. */
+
+/* A shine crosses the cup, clipped to it, once every few seconds. */
+
+/* The globe turns: the meridian flattens and fills out again. */
+
+/* Copy: the top sheet lifts off the one underneath. */
+
+/* Wifi: the arcs go out from the dot, one after another. */
+
+
+/* ------------------------------------------------------------------ *
+ * Everything that actually moves
+ *
+ * All of it behind one media query, which is the whole point of the change.
+ * Before this, reduced motion was three hand-written lists of selectors with
+ * `animation: none !important` on them — and lists drift. Of the 41 things
+ * that animated, 27 were in none of those lists, including every icon
+ * animation added after they were written. Somebody who had asked their
+ * phone for stillness got it from fourteen of them.
+ *
+ * Nothing in here has to be remembered now: an animation that is not written
+ * inside this block does not exist, and one that is does not reach a reader
+ * who asked it not to.
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes drift-a {
+    from { transform: translate(-6%, -4%) scale(1); }
+    to   { transform: translate(10%, 12%) scale(1.18); }
+  }
+  
+  @keyframes drift-b {
+    from { transform: translate(6%, 4%) scale(1.1); }
+    to   { transform: translate(-10%, -8%) scale(0.92); }
+  }
+  
+  @keyframes breathe {
+    50% { transform: scale(1.07); opacity: 0.75; }
+  }
+  
+  @keyframes ring {
+    0%, 70%, 100% { transform: rotate(0deg); }
+    76% { transform: rotate(13deg); }
+    82% { transform: rotate(-11deg); }
+    88% { transform: rotate(7deg); }
+    94% { transform: rotate(-4deg); }
+  }
+  
+  @keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    94% { transform: scaleY(0.08); }
+    96% { transform: scaleY(1); }
+    97.5% { transform: scaleY(0.08); }
+    99% { transform: scaleY(1); }
+  }
+  
+  @keyframes glint {
+    0%, 55% { transform: translateX(0); }
+    75%, 100% { transform: translateX(72px); }
+  }
+  
+  @keyframes hero-in {
+    from { opacity: 0; transform: translateY(10px) scale(0.86) rotate(-8deg); }
+  }
+  
+  @keyframes confetti-fall {
+    0% { opacity: 0; transform: translateY(-10px) rotate(0deg); }
+    12% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(190px) rotate(var(--spin, 40deg)); }
+  }
+  
+  @keyframes screen-in {
+    from { opacity: 0; transform: translateY(7px); }
+  }
+  
+  @keyframes blink {
+    0%, 89%, 100% { transform: scaleY(1); }
+    91% { transform: scaleY(0.06); }
+    93% { transform: scaleY(1); }
+    95.5% { transform: scaleY(0.06); }
+    97.5% { transform: scaleY(1); }
+  }
+  
+  @keyframes blink-shut {
+    0%, 89%, 100% { transform: scaleY(1); opacity: 1; }
+    91% { transform: scaleY(0.06); opacity: 0; }
+    93% { transform: scaleY(1); opacity: 1; }
+    95.5% { transform: scaleY(0.06); opacity: 0; }
+    97.5% { transform: scaleY(1); opacity: 1; }
+  }
+  
+  @keyframes lash {
+    0%, 90%, 100% { opacity: 0; }
+    91.5% { opacity: 1; }
+    93.5% { opacity: 0; }
+    95.5%, 96.5% { opacity: 1; }
+    98% { opacity: 0; }
+  }
+  
+  @keyframes draw-on {
+    to { stroke-dashoffset: 0; }
+  }
+  
+  @keyframes settle {
+    from {
+      opacity: 0;
+      transform: scale(0.55) rotate(-14deg);
+    }
+  }
+  
+  @keyframes word-in {
+    from {
+      opacity: 0;
+      transform: translateY(7px);
+      filter: blur(4px);
+    }
+  }
+  
+  @keyframes pip {
+    0%, 100% { opacity: 0.35; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  
+  @keyframes colon {
+    50% { opacity: 0.2; }
+  }
+  
+  @keyframes voted {
+    40% { transform: translateY(-3px); }
+  }
+  
+  @keyframes bar-grow {
+    from { transform: scaleX(0); }
+  }
+  
+  @keyframes stamp-miss {
+    0% { opacity: 0; transform: scale(1.12) rotate(-2deg); }
+    42% { opacity: 1; transform: scale(1) rotate(0deg); }
+    58% { transform: translateX(-7px); }
+    71% { transform: translateX(6px); }
+    84% { transform: translateX(-3px); }
+    100% { transform: translateX(0); }
+  }
+  
+  /* 1.5 put the ring outside the card, which clips its overflow — so for
+     half a second the "circle" had a straight flat top sliced off by the
+     card's edge. From a 4px outset on a 76px glyph, 1.3 is the most it can
+     grow and stay inside the padding above it. */
+  @keyframes lock-on {
+    from { opacity: 0.85; transform: scale(0.72); }
+    to { opacity: 0; transform: scale(1.3); }
+  }
+  
+  @keyframes glance {
+    0%, 26%, 100% { transform: translateX(0); }
+    33%, 42% { transform: translateX(1.1px); }
+    52%, 60% { transform: translateX(-1.1px); }
+    68% { transform: translateX(0); }
+  }
+  
+  @keyframes wonder {
+    0%, 62%, 100% { transform: rotate(0deg); }
+    70% { transform: rotate(7deg); }
+    80% { transform: rotate(-6deg); }
+    90% { transform: rotate(2deg); }
+  }
+  
+  @keyframes filament {
+    0%, 22%, 100% { opacity: 0.6; }
+    42%, 72% { opacity: 1; }
+  }
+  
+  @keyframes rays {
+    0%, 22%, 100% { opacity: 0; transform: scale(0.88); }
+    42%, 72% { opacity: 0.85; transform: scale(1); }
+  }
+  
+  @keyframes sheen-line {
+    0%, 55%, 100% { opacity: 0.45; }
+    22% { opacity: 1; }
+  }
+  
+  @keyframes wave {
+    0%, 58%, 100% { transform: rotate(0deg); }
+    66% { transform: rotate(11deg); }
+    74% { transform: rotate(-9deg); }
+    82% { transform: rotate(7deg); }
+    90% { transform: rotate(-3deg); }
+  }
+  
+  @keyframes ring {
+    0%, 52%, 100% { transform: rotate(0deg); }
+    60% { transform: rotate(13deg); }
+    70% { transform: rotate(-11deg); }
+    80% { transform: rotate(7deg); }
+    90% { transform: rotate(-3deg); }
+  }
+  
+  @keyframes roll {
+    0%, 48% { transform: rotate(0deg); }
+    60% { transform: rotate(84deg) translateY(-1px); }
+    68%, 100% { transform: rotate(90deg); }
+  }
+  
+  @keyframes lock {
+    0% { transform: scale(1.18); opacity: 0.4; }
+    26%, 100% { transform: scale(1); opacity: 1; }
+  }
+  
+  @keyframes crack {
+    to { stroke-dashoffset: 0; }
+  }
+  
+  @keyframes rock {
+    0%, 44%, 100% { transform: rotate(0deg); }
+    54% { transform: rotate(6deg); }
+    66% { transform: rotate(-5deg); }
+    78% { transform: rotate(2.5deg); }
+    88% { transform: rotate(-1deg); }
+  }
+  
+  @keyframes turn-over {
+    0%, 62% { transform: rotate(0deg); }
+    78%, 100% { transform: rotate(180deg); }
+  }
+  
+  @keyframes tilt {
+    0%, 56%, 100% { transform: rotate(0deg) translateY(0); }
+    68% { transform: rotate(-5deg) translateY(-0.4px); }
+    84% { transform: rotate(4deg) translateY(-0.2px); }
+  }
+  
+  @keyframes shine {
+    0%, 38% { opacity: 0; transform: translate(0, 0); }
+    46% { opacity: 0.95; }
+    62%, 100% { opacity: 0; transform: translate(15px, 0); }
+  }
+  
+  @keyframes spin-face {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(0.16); }
+  }
+  
+  @keyframes lift {
+    0%, 60%, 100% { transform: translate(0, 0); }
+    72%, 80% { transform: translate(1.1px, -1.1px); }
+  }
+  
+  @keyframes reach {
+    0%, 46%, 100% { opacity: 0.4; }
+    18% { opacity: 1; }
+  }
+  
+  .bd-one {
+    animation: drift-a 26s ease-in-out infinite alternate;
+  }
+  
+  .bd-two {
+    animation: drift-b 34s ease-in-out infinite alternate;
+  }
+  
+  .glyph.pulse-soft {
+    animation: breathe 2.6s ease-in-out infinite;
+  }
+  
+  .brandmark.alive .bm-eyes {
+    animation: blink 7s infinite;
+  }
+  
+  .brandmark.alive .bm-glint {
+    animation: glint 6.5s ease-in-out infinite;
+  }
+  
+  .hero .brandmark {
+    animation: hero-in 0.7s cubic-bezier(0.2, 1.1, 0.35, 1) both;
+  }
+  
+  .mode-icon {
+    transition: transform 0.25s cubic-bezier(0.2, 1.2, 0.4, 1);
+  }
+  
+  .mode::after {
+    transition: transform 0.7s ease;
+  }
+  
+  .confetti span {
+    animation: confetti-fall 1.5s cubic-bezier(0.25, 0.6, 0.4, 1) both;
+  }
+  
+  .shell > * {
+    animation: screen-in 0.4s ease both;
+  }
+  
+  .eyes {
+    animation: blink 6.4s ease-in-out infinite;
+  }
+  
+  .eyes.lid {
+    animation-name: blink-shut;
+  }
+  
+  .eye-lash {
+    animation: lash 6.4s ease-in-out infinite;
+  }
+  
+  .card-face .eyes,
+  .card-face .eye-lash {
+    animation-duration: 5.2s;
+  }
+  
+  .glyph.role .eyes {
+    animation-delay: -1.7s;
+  }
+  
+  .draw-on {
+    animation: draw-on 0.45s ease 0.22s forwards;
+  }
+  
+  .glyph.settle {
+    animation: settle 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) both;
+  }
+  
+  .word-in {
+    animation: word-in 0.44s cubic-bezier(0.2, 0.9, 0.3, 1) 0.18s both;
+  }
+  
+  .turn-chip {
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      opacity 0.25s ease;
+  }
+  
+  .turn-chip.now::after {
+    animation: pip 1.5s ease-in-out infinite;
+  }
+  
+  .timer .colon {
+    transition: opacity 0.15s linear;
+  }
+  
+  .timer .colon.ticking {
+    animation: colon 1s steps(2, jump-none) infinite;
+  }
+  
+  .voter {
+    transition:
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+  
+  .voter.voted {
+    animation: voted 0.4s ease both;
+  }
+  
+  .vote-btn {
+    transition:
+      transform 0.14s ease,
+      border-color 0.2s ease,
+      background 0.2s ease;
+  }
+  
+  .bar > span.grow-in {
+    animation: bar-grow 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  }
+  
+  .stamp.miss {
+    animation: stamp-miss 0.66s cubic-bezier(0.2, 1.2, 0.4, 1) both;
+  }
+  
+  .stamp.hit .glyph::after {
+    animation: lock-on 0.85s cubic-bezier(0.2, 0.8, 0.3, 1) 0.2s both;
+  }
+  
+  .icon.anim .pupils {
+    animation: glance 7.2s ease-in-out infinite;
+  }
+  
+  .icon.anim .question {
+    animation: wonder 4.4s ease-in-out infinite;
+  }
+  
+  .icon.anim .bulb {
+    animation: filament 3.6s ease-in-out infinite;
+  }
+  
+  .icon.anim .rays {
+    animation: rays 3.6s ease-in-out infinite;
+  }
+  
+  .icon.anim .lines > path {
+    animation: sheen-line 2.8s ease-in-out infinite;
+  }
+  
+  .icon.anim .lines > path:nth-child(2) {
+    animation-delay: 0.16s;
+  }
+  
+  .icon.anim .lines > path:nth-child(3) {
+    animation-delay: 0.32s;
+  }
+  
+  .icon.anim .hand {
+    animation: wave 3.4s ease-in-out infinite;
+  }
+  
+  .icon.anim .bell-body {
+    animation: ring 2.8s ease-in-out infinite;
+  }
+  
+  .icon.anim .clapper {
+    animation: ring 2.8s ease-in-out 0.06s infinite;
+  }
+  
+  .icon.anim .die {
+    animation: roll 4.2s cubic-bezier(0.3, 1.3, 0.4, 1) infinite;
+  }
+  
+  .icon.anim .ring-out,
+  .icon.anim .ring-in {
+    animation: lock 2.6s cubic-bezier(0.2, 0.8, 0.3, 1) infinite;
+  }
+  
+  .icon.anim .ring-in {
+    animation-delay: 0.1s;
+  }
+  
+  .icon.anim .crack {
+    animation: crack 0.5s ease 0.1s forwards;
+  }
+  
+  .icon.anim .beam {
+    animation: rock 3.6s ease-in-out infinite;
+  }
+  
+  .icon.anim .glass {
+    animation: turn-over 5.2s cubic-bezier(0.4, 0.05, 0.2, 1) infinite;
+  }
+  
+  .icon.anim .face {
+    animation: tilt 4.8s ease-in-out infinite;
+  }
+  
+  .icon.anim .shine {
+    animation: shine 4.4s ease-in-out infinite;
+  }
+  
+  .icon.anim .meridian {
+    animation: spin-face 5.6s ease-in-out infinite;
+  }
+  
+  .icon.anim .sheet {
+    animation: lift 3.2s ease-in-out infinite;
+  }
+  
+  .icon.anim .arc-1,
+  .icon.anim .arc-2,
+  .icon.anim .arc-3 {
+    animation: reach 2.6s ease-in-out infinite;
+  }
+  
+  .icon.anim .arc-2 {
+    animation-delay: 0.14s;
+  }
+  
+  .icon.anim .arc-3 {
+    animation-delay: 0.28s;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .mode::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eye-lash,
+  .stamp.hit .glyph::after {
+    opacity: 0;
+  }
+  .draw-on {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Strokes that are drawn ON by their animation. Without the animation the
+     line is simply not there — a tick with no tick in it, a crack with no
+     crack — so they are finished rather than held at the start. Found by
+     the check in styles.test.js, which is the only reason anybody would
+     notice: these look perfectly fine unless you have asked for stillness. */
+  .draw-on,
+  .icon.anim .crack {
+    stroke-dashoffset: 0;
+  }
+
+  /* Confetti is the one thing that should simply not happen. It sits above
+     the screen at rest and the animation drops it through, so without the
+     animation it is already invisible — this says so on purpose, rather than
+     leaving a row of coloured rectangles parked off-screen and calling it a
+     preference honoured. */
+  .confetti span {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Anything that is invisible at rest has to be made visible, or the icon
+     is missing a piece rather than simply holding still. */
+  .icon.anim .rays { opacity: 0.85; }
+  .icon.anim .crack { stroke-dashoffset: 0; }
+  .icon.anim .arc-1,
+  .icon.anim .arc-2,
+  .icon.anim .arc-3 { opacity: 1; }
+}

@@ -1,0 +1,189 @@
+/* The list of choices made before the cards go out. */
+
+/* ------------------------------------------------------------------ *
+ * Settings
+ * ------------------------------------------------------------------ */
+
+.setting {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.setting:last-child {
+  border-bottom: 0;
+}
+
+/* On a narrow phone the control drops below its label rather than squeezing
+   the description into a one-word-per-line column. */
+.setting .label {
+  flex: 1 1 190px;
+  min-width: 190px;
+}
+
+.setting .label b {
+  display: block;
+  font-weight: 700;
+}
+
+.setting .label span {
+  color: var(--text-faint);
+  font-size: 13px;
+}
+
+.segmented {
+  position: relative;
+  display: inline-flex;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  /* Not 999px. A single row is 46px tall, so 24 clamps to a capsule and
+     looks exactly as it always did — but these controls wrap on a narrow
+     phone (the word-language picker takes two rows in every language at
+     320px, the German preset row three), and on a tall track a 999px radius
+     resolves to a corner far rounder than the moving thumb inside it. The
+     thumb then visibly poked out past the grey outline in any corner row. */
+  border-radius: 24px;
+  padding: 3px;
+  flex: none;
+}
+
+.segmented button {
+  position: relative;
+  z-index: 1;
+  border: 0;
+  background: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-dim);
+  min-height: 38px;
+  transition:
+    color 160ms ease,
+    transform 120ms ease;
+}
+
+.segmented button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.segmented button:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+/* Once the moving block is in place it carries the highlight, so the pressed
+   button drops its own — but the rule above stays as the no-JS fallback. */
+.segmented.has-thumb button[aria-pressed='true'] {
+  background: none;
+}
+
+.seg-thumb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: var(--shadow-thumb);
+  pointer-events: none;
+}
+
+/* .live is added a frame after the first measurement: the block appears where
+   it belongs, and only later moves are animated. */
+.seg-thumb.live {
+  transition:
+    transform 320ms cubic-bezier(0.32, 1.45, 0.52, 1),
+    width 320ms cubic-bezier(0.32, 1.45, 0.52, 1),
+    height 200ms ease;
+}
+
+/* Three language names do not fit beside a label on a phone, so that row
+   puts its control on its own line, full width. */
+.segmented.wide {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.segmented.wide button {
+  flex: 1 1 auto;
+  /* Low enough that five short options (2 3 4 5 ∞) stay on one line, while a
+     row of long labels still wraps rather than overflowing. */
+  min-width: 44px;
+  padding: 8px 8px;
+  white-space: nowrap;
+}
+
+.pack-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pack {
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  color: var(--text-dim);
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 42px;
+}
+
+.pack[aria-pressed='true'] {
+  background: var(--accent-deep);
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+}
+
+.setting-more {
+  border-top: 1px solid var(--line);
+}
+
+.setting-more > summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.setting-more > summary::marker {
+  color: var(--accent-text);
+}
+
+.setting-more-body {
+  padding-bottom: 4px;
+}
+
+.role-grid .pack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  border-radius: 14px;
+  text-align: left;
+  white-space: normal;
+  flex: 1 1 190px;
+}
+
+.role-choice-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.role-choice-description {
+  color: var(--text-faint);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+}

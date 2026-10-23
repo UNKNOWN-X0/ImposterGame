@@ -1,0 +1,166 @@
+/* Cards, buttons, inputs and the mode picker. */
+
+/* ------------------------------------------------------------------ *
+ * Cards
+ * ------------------------------------------------------------------ */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.card.pad-lg {
+  padding: 24px;
+}
+
+.card.flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ *
+ * Buttons
+ * ------------------------------------------------------------------ */
+
+.btn {
+  min-height: var(--tap);
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--surface-2);
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.08s ease, filter 0.15s ease, opacity 0.15s ease;
+  touch-action: manipulation;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.975);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn.danger {
+  background: var(--imposter);
+  color: var(--on-imposter);
+}
+
+.btn.ghost {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--text-dim);
+}
+
+.btn.block {
+  width: 100%;
+}
+
+.btn.lg {
+  min-height: 60px;
+  font-size: 18px;
+}
+
+.btn.sm {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.btn-link {
+  background: none;
+  border: 0;
+  color: var(--text-faint);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 6px;
+  font-size: 14px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Inputs
+ * ------------------------------------------------------------------ */
+
+.input {
+  min-height: var(--tap);
+  width: 100%;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--accent-text);
+}
+
+.input::placeholder {
+  color: var(--text-faint);
+  /* On a 320px phone the guess rows put this next to a wide button, and a
+     German placeholder ("Das Wort war…") was sliced through the middle of a
+     word with nothing to say it had been cut. An ellipsis is not more room,
+     but it is honest about not having any. */
+  text-overflow: ellipsis;
+}
+
+.input.code {
+  text-align: center;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  font-size: 26px;
+  font-weight: 800;
+  padding-left: 0.4em;
+  min-height: 68px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Mode picker
+ * ------------------------------------------------------------------ */
+
+.mode {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.08s ease;
+}
+
+.mode:active {
+  transform: scale(0.99);
+}
+
+.mode:hover {
+  border-color: var(--accent-text);
+}
+
+.mode .mode-title {
+  font-weight: 800;
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mode .mode-desc {
+  color: var(--text-dim);
+  font-size: 15px;
+  margin-top: 6px;
+}
