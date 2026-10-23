@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "node server/server.js",
-    "test": "node --test \"src/**/*.test.js\" \"server/**/*.test.js\"",
+    "test": "node --test",
     "verify": "node tools/verify.mjs",
     "coverage": "node tools/coverage.mjs",
     "fingerprint": "node tools/fingerprint.mjs",
