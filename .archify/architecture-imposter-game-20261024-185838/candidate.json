@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "ImposterGame · application architecture",
+    "locale": "en",
+    "output": ".archify/architecture-imposter-game-20261024-185838/imposter-game.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/UNKNOWN-X0/ImposterGame.git",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "6cd9a68b6e6b60ebe215c24537b1fe1987c27faf"
+    }
+  },
+  "components": [
+    {
+      "id": "players",
+      "type": "external",
+      "label": "Players",
+      "sublabel": "one shared phone or one device each",
+      "pos": [40, 280],
+      "size": [150, 76],
+      "sources": [
+        { "path": "README.md", "line": 21, "end_line": 27 }
+      ]
+    },
+    {
+      "id": "static_host",
+      "type": "cloud",
+      "label": "Static site host",
+      "sublabel": "Netlify, Pages, or equivalent · pass-and-play only",
+      "pos": [330, 70],
+      "size": [210, 84],
+      "sources": [
+        { "path": "README.md", "line": 444, "end_line": 447 }
+      ]
+    },
+    {
+      "id": "client",
+      "type": "frontend",
+      "label": "React app",
+      "sublabel": "routes local play and room screens; sends room actions",
+      "pos": [330, 280],
+      "size": [220, 92],
+      "sources": [
+        { "path": "src/App.jsx", "line": 138, "end_line": 175 },
+        { "path": "src/modes/local/LocalGame.jsx", "line": 22, "end_line": 50 },
+        { "path": "src/modes/online/room.js", "line": 160, "end_line": 205 }
+      ]
+    },
+    {
+      "id": "local_storage",
+      "type": "database",
+      "label": "Browser localStorage",
+      "sublabel": "saves and resumes the active local round",
+      "pos": [330, 535],
+      "size": [210, 82],
+      "sources": [
+        { "path": "src/modes/local/storage.js", "line": 198, "end_line": 225 }
+      ]
+    },
+    {
+      "id": "engine",
+      "type": "frontend",
+      "label": "Shared game engine",
+      "sublabel": "pure reducer runs in the browser or Node server",
+      "pos": [620, 535],
+      "size": [220, 90],
+      "sources": [
+        { "path": "src/core/engine.js", "line": 1, "end_line": 19 },
+        { "path": "src/core/engine.js", "line": 46, "end_line": 48 }
+      ]
+    },
+    {
+      "id": "room_server",
+      "type": "backend",
+      "label": "Node room server",
+      "sublabel": "serves built app; owns room API, state, and SSE streams",
+      "pos": [870, 280],
+      "size": [235, 100],
+      "sources": [
+        { "path": "server/server.js", "line": 136, "end_line": 167 },
+        { "path": "server/server.js", "line": 173, "end_line": 253 },
+        { "path": "server/rooms.js", "line": 263, "end_line": 303 }
+      ]
+    },
+    {
+      "id": "room_file",
+      "type": "database",
+      "label": "Room recovery file",
+      "sublabel": ".rooms.json · recent compatible rooms only",
+      "pos": [877, 535],
+      "size": [220, 86],
+      "sources": [
+        { "path": "server/store.js", "line": 65, "end_line": 105 },
+        { "path": "server/store.js", "line": 142, "end_line": 175 }
+      ]
+    }
+  ],
+  "connections": [
+    { "id": "player-use", "from": "players", "to": "client", "label": "plays or joins" },
+    { "id": "static-client", "from": "static_host", "to": "client", "label": "serves static UI" },
+    { "id": "save-local-round", "from": "client", "to": "local_storage", "label": "save or resume round" },
+    { "id": "local-actions", "from": "client", "to": "engine", "label": "local game actions" },
+    { "id": "local-state", "from": "engine", "to": "client", "label": "next local state" },
+    { "id": "room-actions", "from": "client", "to": "room_server", "label": "HTTP join and actions" },
+    { "id": "room-updates", "from": "room_server", "to": "client", "label": "serves UI · SSE room state" },
+    { "id": "server-rules", "from": "room_server", "to": "engine", "label": "room actions" },
+    { "id": "room-recovery", "from": "room_server", "to": "room_file", "label": "writes / restores" }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "Room recovery",
+      "items": [
+        "The server writes room snapshots to .rooms.json; only compatible rooms touched in the past hour can be restored, so hosts need retained storage. (README.md:463–467; server/store.js:142–175)",
+        "Snapshots include the active secret word and are written owner-only (0600). (README.md:469–478; server/store.js:65–73, 98–106)"
+      ]
+    }
+  ]
+}

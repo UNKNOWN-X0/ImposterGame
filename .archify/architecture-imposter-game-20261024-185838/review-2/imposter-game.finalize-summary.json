@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/candidate.json",
+    "sha256": "7a2965fee4aa51ebe3f044bc1577ecc7dd4a233271adfcabdb7fdc0b1721df54",
+    "bytes": 4481
+  },
+  "artifact": {
+    "path": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/imposter-game.html",
+    "sha256": "8e01115355f256586e7a414a9c8782bd488256b22cedc1e211d8b531bfbb873c",
+    "bytes": 826216
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/imposter-game.html"
+      },
+      "evidence": {
+        "reason": "Chrome DevTools read pipe failed: stream ended\nChrome process: still running.\nChrome transport: Node v22.23.1, libuv 1.51.0, darwin; pid=19588, exitCode=null, signalCode=null.\nChrome read pipe: readable=false, ended=true, destroyed=false, receivedBytes=0, messages=0, bufferedBytes=0.\nChrome write pipe: writable=true, ended=false, destroyed=false, completedWrites=1, writtenBytes=50, bufferedBytes=0."
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/review-2/imposter-game.finalize.json",
+    "summaryReceipt": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/review-2/imposter-game.finalize-summary.json",
+    "browserCheckReceipt": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/review-2/imposter-game.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-24T15:48:29.002Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 1525,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}
