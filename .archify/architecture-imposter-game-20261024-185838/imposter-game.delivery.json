@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "31749747-01e4-4241-a70c-e53aa9df665b",
+  "receiptId": "527c834c-8d8a-462f-be15-f52c5a6a1a33",
   "status": "current",
   "command": "deliver",
   "type": "architecture",
   "input": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/candidate.json",
   "output": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/imposter-game.html",
   "specification": {
-    "sha256": "7a2965fee4aa51ebe3f044bc1577ecc7dd4a233271adfcabdb7fdc0b1721df54",
-    "bytes": 4481
+    "sha256": "545bc633019a36fe17a6a79a4e4cfc74f376b6cd1143ee589b3ae32fafe1df36",
+    "bytes": 15714
   },
   "artifact": {
-    "sha256": "d8d4816a7e86ef4ae228976f04258aa6254e343c46ff789177aca369f2d29f43",
-    "bytes": 825996
+    "sha256": "e71083dc0e902dac61097bd406d3b7ae6fe4672e15743ebfc9875bf486a5acec",
+    "bytes": 860648
   }
 }

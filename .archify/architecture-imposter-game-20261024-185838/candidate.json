@@ -2,7 +2,7 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "ImposterGame · application architecture",
+    "title": "ImposterGame \u00b7 application architecture",
     "locale": "en",
     "output": ".archify/architecture-imposter-game-20261024-185838/imposter-game.html",
     "quality_profile": "showcase",
@@ -10,7 +10,7 @@
       "url": "https://github.com/UNKNOWN-X0/ImposterGame.git",
       "provider": "github",
       "link_mode": "web",
-      "revision": "6cd9a68b6e6b60ebe215c24537b1fe1987c27faf"
+      "revision": "b8b1e40a051da99bce9c06bf3a0992da40bd1225"
     }
   },
   "components": [
@@ -18,104 +18,610 @@
       "id": "players",
       "type": "external",
       "label": "Players",
-      "sublabel": "one shared phone or one device each",
-      "pos": [40, 280],
-      "size": [150, 76],
+      "sublabel": "one shared phone or separate devices",
+      "pos": [
+        40,
+        160
+      ],
+      "size": [
+        190,
+        82
+      ],
       "sources": [
-        { "path": "README.md", "line": 21, "end_line": 27 }
+        {
+          "path": "README.md",
+          "line": 19,
+          "end_line": 27
+        }
       ]
     },
     {
-      "id": "static_host",
-      "type": "cloud",
-      "label": "Static site host",
-      "sublabel": "Netlify, Pages, or equivalent · pass-and-play only",
-      "pos": [330, 70],
-      "size": [210, 84],
+      "id": "netlify",
+      "type": "external",
+      "label": "Netlify static site",
+      "sublabel": "pass-and-play client",
+      "pos": [
+        40,
+        440
+      ],
+      "size": [
+        190,
+        82
+      ],
       "sources": [
-        { "path": "README.md", "line": 444, "end_line": 447 }
+        {
+          "path": "README.md",
+          "line": 444,
+          "end_line": 447
+        }
       ]
     },
     {
-      "id": "client",
+      "id": "github",
+      "type": "external",
+      "label": "GitHub repository",
+      "sublabel": "source and workflow triggers",
+      "pos": [
+        40,
+        1280
+      ],
+      "size": [
+        190,
+        82
+      ],
+      "sources": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "line": 11,
+          "end_line": 18
+        }
+      ]
+    },
+    {
+      "id": "app_shell",
       "type": "frontend",
-      "label": "React app",
-      "sublabel": "routes local play and room screens; sends room actions",
-      "pos": [330, 280],
-      "size": [220, 92],
+      "label": "React app shell",
+      "sublabel": "entry, resume and mode selection",
+      "pos": [
+        310,
+        160
+      ],
+      "size": [
+        225,
+        90
+      ],
       "sources": [
-        { "path": "src/App.jsx", "line": 138, "end_line": 175 },
-        { "path": "src/modes/local/LocalGame.jsx", "line": 22, "end_line": 50 },
-        { "path": "src/modes/online/room.js", "line": 160, "end_line": 205 }
+        {
+          "path": "src/App.jsx",
+          "line": 62,
+          "end_line": 80
+        },
+        {
+          "path": "src/App.jsx",
+          "line": 138,
+          "end_line": 175
+        }
       ]
     },
     {
-      "id": "local_storage",
+      "id": "local_mode",
+      "type": "frontend",
+      "label": "Pass-and-play mode",
+      "sublabel": "local controller and shared reducer",
+      "pos": [
+        310,
+        450
+      ],
+      "size": [
+        225,
+        90
+      ],
+      "sources": [
+        {
+          "path": "src/modes/local/LocalGame.jsx",
+          "line": 31,
+          "end_line": 50
+        },
+        {
+          "path": "src/modes/local/LocalGame.jsx",
+          "line": 73,
+          "end_line": 120
+        }
+      ]
+    },
+    {
+      "id": "room_client",
+      "type": "frontend",
+      "label": "Room client",
+      "sublabel": "join, action requests and SSE updates",
+      "pos": [
+        955,
+        450
+      ],
+      "size": [
+        225,
+        90
+      ],
+      "sources": [
+        {
+          "path": "src/modes/online/OnlineGame.jsx",
+          "line": 31,
+          "end_line": 53
+        },
+        {
+          "path": "src/modes/online/room.js",
+          "line": 109,
+          "end_line": 129
+        },
+        {
+          "path": "src/modes/online/useRoom.js",
+          "line": 28,
+          "end_line": 74
+        }
+      ]
+    },
+    {
+      "id": "browser_store",
       "type": "database",
-      "label": "Browser localStorage",
-      "sublabel": "saves and resumes the active local round",
-      "pos": [330, 535],
-      "size": [210, 82],
+      "label": "Browser storage",
+      "sublabel": "local round, preferences and pack shelf",
+      "pos": [
+        40,
+        760
+      ],
+      "size": [
+        225,
+        90
+      ],
       "sources": [
-        { "path": "src/modes/local/storage.js", "line": 198, "end_line": 225 }
+        {
+          "path": "src/modes/local/LocalGame.jsx",
+          "line": 89,
+          "end_line": 120
+        },
+        {
+          "path": "src/features/packs/store.js",
+          "line": 35,
+          "end_line": 55
+        },
+        {
+          "path": "src/modes/online/room.js",
+          "line": 109,
+          "end_line": 129
+        }
       ]
     },
     {
-      "id": "engine",
+      "id": "phase_ui",
       "type": "frontend",
-      "label": "Shared game engine",
-      "sublabel": "pure reducer runs in the browser or Node server",
-      "pos": [620, 535],
-      "size": [220, 90],
+      "label": "Lobby and round screens",
+      "sublabel": "settings, reveal, clues, vote and results",
+      "pos": [
+        625,
+        450
+      ],
+      "size": [
+        235,
+        94
+      ],
       "sources": [
-        { "path": "src/core/engine.js", "line": 1, "end_line": 19 },
-        { "path": "src/core/engine.js", "line": 46, "end_line": 48 }
+        {
+          "path": "src/modes/screens.js",
+          "line": 18,
+          "end_line": 50
+        },
+        {
+          "path": "src/modes/local/screens/Reveal.jsx",
+          "line": 13,
+          "end_line": 45
+        },
+        {
+          "path": "src/features/round/RoleCard.jsx",
+          "line": 140,
+          "end_line": 163
+        }
       ]
     },
     {
-      "id": "room_server",
+      "id": "word_packs",
       "type": "backend",
-      "label": "Node room server",
-      "sublabel": "serves built app; owns room API, state, and SSE streams",
-      "pos": [870, 280],
-      "size": [235, 100],
+      "label": "Word and pack catalog",
+      "sublabel": "built-in languages plus custom packs",
+      "pos": [
+        955,
+        160
+      ],
+      "size": [
+        235,
+        94
+      ],
       "sources": [
-        { "path": "server/server.js", "line": 136, "end_line": 167 },
-        { "path": "server/server.js", "line": 173, "end_line": 253 },
-        { "path": "server/rooms.js", "line": 263, "end_line": 303 }
+        {
+          "path": "src/content/words/builtin/index.js",
+          "line": 28,
+          "end_line": 71
+        },
+        {
+          "path": "src/content/words/index.js",
+          "line": 73,
+          "end_line": 82
+        },
+        {
+          "path": "src/content/words/index.js",
+          "line": 137,
+          "end_line": 161
+        }
       ]
     },
     {
-      "id": "room_file",
+      "id": "rule_engine",
+      "type": "backend",
+      "label": "Shared game engine",
+      "sublabel": "state reducer, roles, phases and scoring",
+      "pos": [
+        625,
+        780
+      ],
+      "size": [
+        235,
+        94
+      ],
+      "sources": [
+        {
+          "path": "src/core/engine.js",
+          "line": 46,
+          "end_line": 50
+        },
+        {
+          "path": "src/core/engine.js",
+          "line": 100,
+          "end_line": 160
+        },
+        {
+          "path": "src/core/engine.js",
+          "line": 433,
+          "end_line": 552
+        }
+      ]
+    },
+    {
+      "id": "ci",
+      "type": "backend",
+      "label": "GitHub Actions CI",
+      "sublabel": "Node matrix, coverage and browser sweeps",
+      "pos": [
+        310,
+        1280
+      ],
+      "size": [
+        235,
+        94
+      ],
+      "sources": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "line": 19,
+          "end_line": 54
+        }
+      ]
+    },
+    {
+      "id": "node_service",
+      "type": "backend",
+      "label": "Node room service",
+      "sublabel": "static files, room HTTP API and SSE",
+      "pos": [
+        955,
+        780
+      ],
+      "size": [
+        235,
+        94
+      ],
+      "sources": [
+        {
+          "path": "server/server.js",
+          "line": 173,
+          "end_line": 263
+        },
+        {
+          "path": "server/server.js",
+          "line": 284,
+          "end_line": 313
+        }
+      ]
+    },
+    {
+      "id": "room_manager",
+      "type": "backend",
+      "label": "Room manager",
+      "sublabel": "membership, host rules and action dispatch",
+      "pos": [
+        955,
+        1030
+      ],
+      "size": [
+        235,
+        94
+      ],
+      "sources": [
+        {
+          "path": "server/rooms.js",
+          "line": 77,
+          "end_line": 90
+        },
+        {
+          "path": "server/rooms.js",
+          "line": 149,
+          "end_line": 160
+        },
+        {
+          "path": "server/rooms.js",
+          "line": 240,
+          "end_line": 303
+        }
+      ]
+    },
+    {
+      "id": "player_views",
+      "type": "security",
+      "label": "Public and private views",
+      "sublabel": "shared state plus each player's secret view",
+      "pos": [
+        625,
+        1030
+      ],
+      "size": [
+        235,
+        94
+      ],
+      "sources": [
+        {
+          "path": "src/core/select.js",
+          "line": 84,
+          "end_line": 119
+        },
+        {
+          "path": "src/core/select.js",
+          "line": 144,
+          "end_line": 204
+        },
+        {
+          "path": "server/rooms.js",
+          "line": 323,
+          "end_line": 333
+        }
+      ]
+    },
+    {
+      "id": "room_store",
       "type": "database",
       "label": "Room recovery file",
-      "sublabel": ".rooms.json · recent compatible rooms only",
-      "pos": [877, 535],
-      "size": [220, 86],
+      "sublabel": ".rooms.json, including active game state",
+      "pos": [
+        955,
+        1280
+      ],
+      "size": [
+        235,
+        94
+      ],
       "sources": [
-        { "path": "server/store.js", "line": 65, "end_line": 105 },
-        { "path": "server/store.js", "line": 142, "end_line": 175 }
+        {
+          "path": "server/store.js",
+          "line": 65,
+          "end_line": 73
+        },
+        {
+          "path": "server/store.js",
+          "line": 98,
+          "end_line": 106
+        },
+        {
+          "path": "server/store.js",
+          "line": 142,
+          "end_line": 175
+        }
+      ]
+    },
+    {
+      "id": "render",
+      "type": "cloud",
+      "label": "Render web service",
+      "sublabel": "configured Node host for rooms",
+      "pos": [
+        310,
+        1030
+      ],
+      "size": [
+        235,
+        88
+      ],
+      "sources": [
+        {
+          "path": "render.yaml",
+          "line": 13,
+          "end_line": 28
+        },
+        {
+          "path": "README.md",
+          "line": 449,
+          "end_line": 467
+        }
       ]
     }
   ],
   "connections": [
-    { "id": "player-use", "from": "players", "to": "client", "label": "plays or joins" },
-    { "id": "static-client", "from": "static_host", "to": "client", "label": "serves static UI" },
-    { "id": "save-local-round", "from": "client", "to": "local_storage", "label": "save or resume round" },
-    { "id": "local-actions", "from": "client", "to": "engine", "label": "local game actions" },
-    { "id": "local-state", "from": "engine", "to": "client", "label": "next local state" },
-    { "id": "room-actions", "from": "client", "to": "room_server", "label": "HTTP join and actions" },
-    { "id": "room-updates", "from": "room_server", "to": "client", "label": "serves UI · SSE room state" },
-    { "id": "server-rules", "from": "room_server", "to": "engine", "label": "room actions" },
-    { "id": "room-recovery", "from": "room_server", "to": "room_file", "label": "writes / restores" }
+    {
+      "id": "players-open-app",
+      "from": "players",
+      "to": "app_shell",
+      "label": "open and choose a mode"
+    },
+    {
+      "id": "static-client",
+      "from": "netlify",
+      "to": "app_shell",
+      "label": "serves static pass-and-play build"
+    },
+    {
+      "id": "app-local",
+      "from": "app_shell",
+      "to": "local_mode",
+      "label": "same-device game"
+    },
+    {
+      "id": "app-room",
+      "from": "app_shell",
+      "to": "room_client",
+      "label": "multiplayer room"
+    },
+    {
+      "id": "local-screen-state",
+      "from": "local_mode",
+      "to": "phase_ui",
+      "label": "phase and player state"
+    },
+    {
+      "id": "screen-local-actions",
+      "from": "phase_ui",
+      "to": "local_mode",
+      "label": "player actions"
+    },
+    {
+      "id": "room-screen-state",
+      "from": "room_client",
+      "to": "phase_ui"
+    },
+    {
+      "id": "screen-room-actions",
+      "from": "phase_ui",
+      "to": "room_client"
+    },
+    {
+      "id": "local-reducer",
+      "from": "local_mode",
+      "to": "rule_engine"
+    },
+    {
+      "id": "local-persist",
+      "from": "local_mode",
+      "to": "browser_store",
+      "label": "save active round and settings"
+    },
+    {
+      "id": "room-session",
+      "from": "room_client",
+      "to": "browser_store",
+      "label": "save reconnect session"
+    },
+    {
+      "id": "screen-word-packs",
+      "from": "phase_ui",
+      "to": "word_packs"
+    },
+    {
+      "id": "word-pool-engine",
+      "from": "word_packs",
+      "to": "rule_engine",
+      "label": "selected word pool"
+    },
+    {
+      "id": "room-client-requests",
+      "from": "room_client",
+      "to": "node_service",
+      "label": "create, join and act over HTTP"
+    },
+    {
+      "id": "service-room-manager",
+      "from": "node_service",
+      "to": "room_manager",
+      "label": "room API and stream handlers"
+    },
+    {
+      "id": "room-reducer",
+      "from": "room_manager",
+      "to": "rule_engine"
+    },
+    {
+      "id": "room-view",
+      "from": "room_manager",
+      "to": "player_views",
+      "label": "build a payload for each player"
+    },
+    {
+      "id": "view-stream",
+      "from": "player_views",
+      "to": "node_service"
+    },
+    {
+      "id": "service-updates",
+      "from": "node_service",
+      "to": "room_client"
+    },
+    {
+      "id": "room-persistence",
+      "from": "room_manager",
+      "to": "room_store",
+      "label": "save and restore compatible rooms"
+    },
+    {
+      "id": "repo-ci",
+      "from": "github",
+      "to": "ci",
+      "label": "push, pull request or manual run"
+    },
+    {
+      "id": "render-runtime",
+      "from": "render",
+      "to": "node_service",
+      "label": "build and run Node service"
+    }
   ],
   "cards": [
     {
-      "dot": "amber",
-      "title": "Room recovery",
+      "dot": "cyan",
+      "title": "Two play paths share the same game rules",
       "items": [
-        "The server writes room snapshots to .rooms.json; only compatible rooms touched in the past hour can be restored, so hosts need retained storage. (README.md:463–467; server/store.js:142–175)",
-        "Snapshots include the active secret word and are written owner-only (0600). (README.md:469–478; server/store.js:65–73, 98–106)"
+        "The app resumes a room session before a saved local round, then opens either pass-and-play or room mode. (src/App.jsx:72\u201379, 138\u2013175)",
+        "Local actions call the reducer directly. Round state, roster, scores, config, recent words and custom packs are saved in the browser; an active round is written after each action. (src/modes/local/LocalGame.jsx:73\u2013120)",
+        "Both modes render the shared phase set. In pass-and-play, each person taps through a hand-off gate before seeing their own role card. (src/modes/screens.js:18\u201350; src/modes/local/screens/Reveal.jsx:13\u201345; src/features/round/RoleCard.jsx:140\u2013163)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Settings determine the words and roles dealt",
+      "items": [
+        "Built-in English, Thai and German packs are loaded on demand and cached; failed loads can be retried. (src/content/words/builtin/index.js:28\u201371)",
+        "The active language, selected built-in packs and matching custom packs form the word pool used to start the round. An unknown saved pack selection falls back to all packs for that language. (src/content/words/index.js:73\u201382, 137\u2013161)",
+        "The reducer deals roles and a word, advances through reveal, clues, voting and verdict, then applies scoring and round-ending rules. (src/core/engine.js:100\u2013160, 174\u2013216, 433\u2013552)"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Room actions are checked on the server and views hide secrets",
+      "items": [
+        "Room clients create or join over HTTP, send actions over HTTP, and receive state through server-sent events with reconnect support. (src/modes/online/room.js:109\u2013129, 161\u2013205; src/modes/online/useRoom.js:28\u201374)",
+        "The room manager checks host-only actions and overwrites actor IDs from the joined player's token before calling the shared reducer. (server/rooms.js:240\u2013303)",
+        "Each payload combines public state with a view for that player. The public projection strips secrets and hides votes before tally; private role and word details are sent only in the player's view. (src/core/select.js:84\u2013119, 144\u2013204; server/rooms.js:323\u2013333)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Room recovery stores sensitive live state",
+      "items": [
+        "The server writes room state and join tokens to a JSON file using an atomic rename and owner-only file mode 0600. That state includes the word currently in play. (server/store.js:65\u201373, 98\u2013106; README.md:469\u2013478)",
+        "Startup restores only compatible rooms touched within the configured recovery window; idle rooms are swept after six hours. (server/store.js:142\u2013175; README.md:459\u2013467)",
+        "The checked-in Render service config does not declare a persistent disk. Recovery across a host restart therefore depends on the host retaining the configured storage path. (render.yaml:13\u201328; README.md:463\u2013467)"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Static play, room hosting and CI are separate deployments",
+      "items": [
+        "Netlify serves the static pass-and-play build. Multiplayer rooms need the Node service; a static host alone cannot handle room requests. (README.md:19\u201327, 444\u2013457)",
+        "The Render manifest builds the app, starts the Node server, checks /api/health and sets six-character room codes. The Node server also serves the built files. (render.yaml:13\u201328; server/server.js:284\u2013313)",
+        "GitHub Actions runs Node 20 and 22 tests, Node 22 coverage, and browser sweeps for screens and endings. The workflow contains no deployment step. (.github/workflows/ci.yml:11\u201354)"
       ]
     }
   ]

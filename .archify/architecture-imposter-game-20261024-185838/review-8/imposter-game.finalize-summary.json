@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/candidate.json",
+    "sha256": "b11ebc10c2a7cb2ba811878af06034c7b8651212f9b2fab923d33799544803ab",
+    "bytes": 12487
+  },
+  "artifact": {
+    "path": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/imposter-game.html",
+    "sha256": "82fd27cfecd8754a98a7dd8a165951d4873753dc80bfb42c971c206f04fc97d7",
+    "bytes": 862051
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/review-8/imposter-game.finalize.json",
+    "summaryReceipt": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/review-8/imposter-game.finalize-summary.json",
+    "browserCheckReceipt": "/Users/thanate/Developer/Games/ImposterGame/.archify/architecture-imposter-game-20261024-185838/review-8/imposter-game.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-24T15:48:29.002Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 4030,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  },
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "resolvedCrossovers": 23,
+      "routesOverSuggestedBends": 10,
+      "routesOverSuggestedStretch": 2
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [
+        {
+          "left": {
+            "id": "app-room",
+            "from": "app_shell",
+            "to": "room_client",
+            "label": "multiplayer room",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "right": {
+            "id": "local-persist",
+            "from": "local_mode",
+            "to": "browser_store",
+            "label": "save active round and settings",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "point": [
+            302.8999999999999,
+            705
+          ]
+        },
+        {
+          "left": {
+            "id": "local-screen-state",
+            "from": "local_mode",
+            "to": "phase_ui",
+            "label": "phase and player state",
+            "collectionIndex": 4,
+            "artifactIndex": 5
+          },
+          "right": {
+            "id": "screen-local-actions",
+            "from": "phase_ui",
+            "to": "local_mode",
+            "label": "player actions",
+            "collectionIndex": 5,
+            "artifactIndex": 6
+          },
+          "point": [
+            601,
+            333
+          ],
+          "sharedNode": "local_mode"
+        },
+        {
+          "left": {
+            "id": "screen-local-actions",
+            "from": "phase_ui",
+            "to": "local_mode",
+            "label": "player actions",
+            "collectionIndex": 5,
+            "artifactIndex": 6
+          },
+          "right": {
+            "id": "room-screen-state",
+            "from": "room_client",
+            "to": "phase_ui",
+            "label": "",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "point": [
+            601,
+            357
+          ],
+          "sharedNode": "phase_ui"
+        },
+        {
+          "left": {
+            "id": "screen-local-actions",
+            "from": "phase_ui",
+            "to": "local_mode",
+            "label": "player actions",
+            "collectionIndex": 5,
+            "artifactIndex": 6
+          },
+          "right": {
+            "id": "screen-room-actions",
+            "from": "phase_ui",
+            "to": "room_client",
+            "label": "",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "point": [
+            601,
+            349
+          ],
+          "sharedNode": "phase_ui"
+        },
+        {
+          "left": {
+            "id": "room-screen-state",
+            "from": "room_client",
+            "to": "phase_ui",
+            "label": "",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "right": {
+            "id": "screen-room-actions",
+            "from": "phase_ui",
+            "to": "room_client",
+            "label": "",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "point": [
+            559,
+            531.75
+          ],
+          "sharedNode": "room_client"
+        },
+        {
+          "left": {
+            "id": "room-screen-state",
+            "from": "room_client",
+            "to": "phase_ui",
+            "label": "",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "right": {
+            "id": "local-reducer",
+            "from": "local_mode",
+            "to": "rule_engine",
+            "label": "",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "point": [
+            572,
+            479
+          ]
+        },
+        {
+          "left": {
+            "id": "room-screen-state",
+            "from": "room_client",
+            "to": "phase_ui",
+            "label": "",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "right": {
+            "id": "local-persist",
+            "from": "local_mode",
+            "to": "browser_store",
+            "label": "save active round and settings",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "point": [
+            408.5,
+            657
+          ]
+        },
+        {
+          "left": {
+            "id": "room-screen-state",
+            "from": "room_client",
+            "to": "phase_ui",
+            "label": "",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "right": {
+            "id": "service-updates",
+            "from": "node_service",
+            "to": "room_client",
+            "label": "",
+            "collectionIndex": 18,
+            "artifactIndex": 19
+          },
+          "point": [
+            614,
+            357
+          ],
+          "sharedNode": "room_client"
+        }
+      ],
+      "detours": [
+        {
+          "relationship": {
+            "id": "players-open-app",
+            "from": "players",
+            "to": "app_shell",
+            "label": "open and choose a mode",
+            "collectionIndex": 0,
+            "artifactIndex": 1
+          },
+          "bends": 3,
+          "stretch": 1.225
+        },
+        {
+          "relationship": {
+            "id": "room-screen-state",
+            "from": "room_client",
+            "to": "phase_ui",
+            "label": "",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "bends": 4,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "id": "screen-room-actions",
+            "from": "phase_ui",
+            "to": "room_client",
+            "label": "",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "bends": 3,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "id": "local-persist",
+            "from": "local_mode",
+            "to": "browser_store",
+            "label": "save active round and settings",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "bends": 4,
+          "stretch": 1.553,
+          "directCorridorBlockers": [
+            {
+              "id": "room_client",
+              "label": "Room client",
+              "box": [
+                310,
+                660,
+                225,
+                90
+              ]
+            }
+          ]
+        },
+        {
+          "relationship": {
+            "id": "room-client-requests",
+            "from": "room_client",
+            "to": "node_service",
+            "label": "create, join and act over HTTP",
+            "collectionIndex": 13,
+            "artifactIndex": 14
+          },
+          "bends": 6,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "id": "view-stream",
+            "from": "player_views",
+            "to": "node_service",
+            "label": "",
+            "collectionIndex": 17,
+            "artifactIndex": 18
+          },
+          "bends": 4,
+          "stretch": 1.455,
+          "directCorridorBlockers": [
+            {
+              "id": "room_manager",
+              "label": "Room manager",
+              "box": [
+                955,
+                360,
+                235,
+                94
+              ]
+            }
+          ]
+        },
+        {
+          "relationship": {
+            "id": "service-updates",
+            "from": "node_service",
+            "to": "room_client",
+            "label": "",
+            "collectionIndex": 18,
+            "artifactIndex": 19
+          },
+          "bends": 4,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "id": "room-persistence",
+            "from": "room_manager",
+            "to": "room_store",
+            "label": "save and restore compatible rooms",
+            "collectionIndex": 19,
+            "artifactIndex": 20
+          },
+          "bends": 3,
+          "stretch": 1.109,
+          "directCorridorBlockers": [
+            {
+              "id": "player_views",
+              "label": "Public and private views",
+              "box": [
+                955,
+                600,
+                235,
+                94
+              ]
+            }
+          ]
+        }
+      ],
+      "truncated": true
+    },
+    "hints": [
+      "app_shell → room_client crosses local_mode → browser_store: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor.",
+      "local_mode → phase_ui and phase_ui → local_mode cross next to local_mode: move node phase_ui or phase_ui so the two reach local_mode from different sides (for example one level with it, one directly above or below it).",
+      "phase_ui → local_mode and room_client → phase_ui cross next to phase_ui: move node local_mode or room_client so the two reach phase_ui from different sides (for example one level with it, one directly above or below it).",
+      "phase_ui → local_mode and phase_ui → room_client cross next to phase_ui: move node local_mode or room_client so the two reach phase_ui from different sides (for example one level with it, one directly above or below it).",
+      "room_client → phase_ui and phase_ui → room_client cross next to room_client: move node phase_ui or phase_ui so the two reach room_client from different sides (for example one level with it, one directly above or below it).",
+      "room_client → phase_ui crosses local_mode → rule_engine: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor.",
+      "room_client → phase_ui crosses local_mode → browser_store: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor.",
+      "room_client → phase_ui and node_service → room_client cross next to room_client: move node phase_ui or node_service so the two reach room_client from different sides (for example one level with it, one directly above or below it)."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}
